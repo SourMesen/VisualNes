@@ -1,5 +1,5 @@
-#pragma once
 #include "stdafx.h"
+#include <cstring>
 #include "datastructures.h"
 #include "wires.h"
 #include "chipsim.h"
@@ -245,7 +245,7 @@ void handleChrBus() {
 }
 
 void handleIoBus() {
-	if((ioCounter == 0) && (testprogramAddress < testprogram.size())) {
+	if((ioCounter == 0) && (testprogramAddress < (int)testprogram.size())) {
 		//cmd_highlightCurrent();
 		ioParms = testprogram[testprogramAddress];
 		if(ioParms & 0x3000)

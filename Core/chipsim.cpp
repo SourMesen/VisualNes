@@ -22,6 +22,7 @@ THE SOFTWARE.
 
 #include "stdafx.h"
 #include <iostream>
+#include <cstring>
 #include "datastructures.h"
 #include "chipsim.h"
 

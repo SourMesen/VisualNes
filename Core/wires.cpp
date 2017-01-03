@@ -45,11 +45,6 @@ void setupNodes()
 
 	for(size_t i = 0, len = segdefs.size(); i < len; i++) {
 		std::vector<int> &seg = segdefs[i];
-		int segmentID = seg[0];
-	}
-
-	for(size_t i = 0, len = segdefs.size(); i < len; i++) {
-		std::vector<int> &seg = segdefs[i];
 		int w = seg[0];
 
 		if(nodes[w].num == -1) {

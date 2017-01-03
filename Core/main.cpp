@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include <deque>
+#include <cstring>
 #include <algorithm>
 #include "datadefs.h"
 #include "macros.h"
