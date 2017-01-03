@@ -42,7 +42,6 @@ bool hasGnd = false;
 bool hasPwr = false;
 
 void recalcNodeList(shared_ptr<vector<int>> list) {
-	//var n = list[0];
 	if(processesNodes.empty()) {
 		processesNodes.insert(processesNodes.end(), nodes.size(), 0);
 		recalclists[0].reset(new vector<int>(100));
@@ -57,19 +56,7 @@ void recalcNodeList(shared_ptr<vector<int>> list) {
 	for(int j = 0; j<100; j++) {		// loop limiter
 		if(j == 99) {
 			throw std::runtime_error("Maximum loop exceeded");
-			//console.log('Encountered loop!');
 		}
-		/*if(ctrace) {
-			var i;
-			for(i = 0; i<traceTheseNodes.length; i++) {
-				if(list.indexOf(traceTheseNodes[i]) != -1) break;
-			}
-			if((traceTheseNodes.length == 0) || (list.indexOf(traceTheseNodes[i]) == -1)) {
-				console.log('recalcNodeList iteration: ', j, ' ', list.length, ' nodes');
-			} else {
-				console.log('recalcNodeList iteration: ', j, ' ', list.length, ' nodes ', list);
-			}
-		}*/
 
 		for(int nodeNumber : *list) {
 			recalcNode(nodeNumber);
@@ -87,7 +74,6 @@ void recalcNodeList(shared_ptr<vector<int>> list) {
 
 		groupEmpty = true;
 	}
-	//if(ctrace) console.log(n, ' looping...');
 }
 
 void recalcNode(int nodeNumber) {
@@ -95,14 +81,7 @@ void recalcNode(int nodeNumber) {
 	if(nodeNumber == npwr) return;
 	getNodeGroup(nodeNumber);
 	bool newState = getNodeValue();
-	/*if(ctrace) {
-		var i;
-		for(i = 0; i<group.length; i++) {
-			if(traceTheseNodes.indexOf(group[i]) != -1) break;
-		}
-		if((traceTheseNodes.indexOf(node) != -1) || (i != group.length))
-			console.log('recalc ', node, ' ', group, ' to ', newState);
-	}*/
+
 	for(int nn : group) {
 		node& n = nodes[nn];
 		if(n.state != newState) {
@@ -117,16 +96,12 @@ void recalcNode(int nodeNumber) {
 
 void turnTransistorOn(transistor &t) {
 	if(t.on) return;
-	/*if(ctrace && ((traceTheseTransistors.indexOf(t.name) != -1) || (traceTheseNodes.indexOf(t.c1) != -1) || (traceTheseNodes.indexOf(t.c2) != -1)))
-		console.log(t.name, ' on ', t.gate, ' ', t.c1, ' ', t.c2);*/
 	t.on = true;
 	addRecalcNode(t.c1);
 }
 
 void turnTransistorOff(transistor &t) {
 	if(!t.on) return;
-	/*if(ctrace && ((traceTheseTransistors.indexOf(t.name) != -1) || (traceTheseNodes.indexOf(t.c1) != -1) || (traceTheseNodes.indexOf(t.c2) != -1)))
-		console.log(t.name, ' off ', t.gate, ' ', t.c1, ' ', t.c2);*/
 	t.on = false;
 	addRecalcNode(t.c1);
 	addRecalcNode(t.c2);
@@ -202,14 +177,6 @@ bool getNodeValue() {
 bool isNodeHigh(int nn) {
 	return(nodes[nn].state);
 }
-/*
-void saveString(name, str) {
-	var request = new XMLHttpRequest();
-	request.onreadystatechange = function() {};
-	request.open('PUT', 'save.php?name=' + name, true);
-	request.setRequestHeader('Content-Type', 'text/plain');
-	request.send(str);
-}*/
 
 shared_ptr<vector<int>> allNodes() {
 	shared_ptr<vector<int>> result(new vector<int>());

@@ -145,6 +145,7 @@
     <ClInclude Include="chipsim.h" />
     <ClInclude Include="datadefs.h" />
     <ClInclude Include="datastructures.h" />
+    <ClInclude Include="HexUtilities.h" />
     <ClInclude Include="logger.h" />
     <ClInclude Include="macros.h" />
     <ClInclude Include="ramedit.h" />
@@ -152,6 +153,7 @@
     <ClInclude Include="wires.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="HexUtilities.cpp" />
     <ClCompile Include="logger.cpp" />
     <ClCompile Include="macros.cpp" />
     <ClCompile Include="main.cpp" />

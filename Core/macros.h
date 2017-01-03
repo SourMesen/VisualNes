@@ -2,6 +2,7 @@
 #include "stdafx.h"
 
 extern uint8_t memory[0x3000];
+extern int cycle;
 
 void initChip(string state);
 void halfStep();
@@ -17,3 +18,4 @@ uint8_t mRead(int a);
 void mWrite(int a, int d);
 void handleChrBus();
 void handleIoBus();
+void resetProgram(vector<uint16_t> newProgram);

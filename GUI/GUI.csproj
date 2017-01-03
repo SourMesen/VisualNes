@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoreWrapper.cs" />
     <Compile Include="DoubleBufferedListView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -76,6 +77,12 @@
     </Compile>
     <Compile Include="frmMain.Designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSelectColumns.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelectColumns.Designer.cs">
+      <DependentUpon>frmSelectColumns.cs</DependentUpon>
     </Compile>
     <Compile Include="HexBox\BuiltInContextMenu.cs">
       <SubType>Component</SubType>
@@ -97,11 +104,16 @@
     <Compile Include="HexBox\IByteProvider.cs" />
     <Compile Include="HexBox\MemoryDataBlock.cs" />
     <Compile Include="HexBox\NativeMethods.cs" />
+    <Compile Include="HexBox\StaticByteProvider.cs" />
     <Compile Include="HexBox\Util.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UTF8Marshaler.cs" />
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelectColumns.resx">
+      <DependentUpon>frmSelectColumns.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HexBox\HexBox.resx">
       <DependentUpon>HexBox.cs</DependentUpon>
@@ -126,7 +138,15 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\view-refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Export.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Import.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy $(SolutionDir)\Core\*.txt $(TargetDir)</PostBuildEvent>

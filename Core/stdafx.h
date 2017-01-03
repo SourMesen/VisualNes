@@ -8,6 +8,12 @@
 #include <fstream>
 #include <sstream>
 
+#if _MSC_VER
+#define DllExport extern "C" __declspec(dllexport)
+#else
+#define DllExport extern "C" __attribute__((visibility("default")))
+#endif
+
 using std::vector;
 using std::string;
 using std::ios;
