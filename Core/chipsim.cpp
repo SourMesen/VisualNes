@@ -221,7 +221,7 @@ shared_ptr<vector<int>> allNodes() {
 	return result;
 }
 
-string getState() {
+string getStateString() {
 	char codes[2] = { 'l', 'h' };
 	string res;
 	for(node& n : nodes) {

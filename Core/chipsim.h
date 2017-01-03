@@ -10,7 +10,7 @@ void getNodeGroup(int i);
 void addNodeToGroup(int i);
 bool getNodeValue();
 bool isNodeHigh(int nn);
-string getState();
+string getStateString();
 void setState(string str);
 void setFloat(string name);
 void setHigh(string name);

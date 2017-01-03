@@ -33,6 +33,12 @@
     <ClInclude Include="macros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ramedit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="chipsim.cpp">
@@ -53,6 +59,12 @@
     <ClCompile Include="macros.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ramedit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="nodenames.txt">
@@ -62,6 +74,12 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="transdefs.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="palettenodes.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="spritenodes.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

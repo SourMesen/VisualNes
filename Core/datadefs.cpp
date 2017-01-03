@@ -5,6 +5,8 @@
 vector<vector<int>> segdefs;
 vector<transdef> transdefs;
 unordered_map<string, int> nodenames;
+vector<vector<vector<int>>> palette_nodes;
+vector<vector<vector<int>>> sprite_nodes;
 
 vector<string> split(const string &s, char delim)
 {
@@ -19,7 +21,7 @@ vector<string> split(const string &s, char delim)
 
 void loadSegmentDefinitions()
 {
-	ifstream file("../Visual2C02/segdefs.txt", ios::in | ios::binary);
+	ifstream file("segdefs.txt", ios::in | ios::binary);
 
 	while(file.good()) {
 		string lineContent;
@@ -39,7 +41,7 @@ void loadSegmentDefinitions()
 
 void loadTransistorDefinitions()
 {
-	ifstream file("../Visual2C02/transdefs.txt", ios::in | ios::binary);
+	ifstream file("transdefs.txt", ios::in | ios::binary);
 
 	while(file.good()) {
 		string lineContent;
@@ -71,7 +73,7 @@ void loadTransistorDefinitions()
 
 void loadNodeNames()
 {
-	ifstream file("../Visual2C02/nodenames.txt", ios::in | ios::binary);
+	ifstream file("nodenames.txt", ios::in | ios::binary);
 
 	while(file.good()) {
 		string lineContent;
@@ -85,9 +87,53 @@ void loadNodeNames()
 	}
 }
 
+void loadPaletteNodes()
+{
+	ifstream file("palettenodes.txt", ios::in | ios::binary);
+
+	while(file.good()) {
+		string lineContent;
+		std::getline(file, lineContent);
+		if(lineContent.empty()) {
+			continue;
+		}
+
+		vector<vector<int>> row;
+		vector<string> values = split(lineContent, ',');
+		for(string &pair : values) {
+			vector<string> pairData = split(pair, '|');
+			row.push_back({ std::stoi(pairData[0]), std::stoi(pairData[1]) });
+		}
+		palette_nodes.push_back(row);
+	}
+}
+
+void loadSpriteNodes()
+{
+	ifstream file("spritenodes.txt", ios::in | ios::binary);
+
+	while(file.good()) {
+		string lineContent;
+		std::getline(file, lineContent);
+		if(lineContent.empty()) {
+			continue;
+		}
+
+		vector<vector<int>> row;
+		vector<string> values = split(lineContent, ',');
+		for(string &pair : values) {
+			vector<string> pairData = split(pair, '|');
+			row.push_back({ std::stoi(pairData[0]), std::stoi(pairData[1]) });
+		}
+		sprite_nodes.push_back(row);
+	}
+}
+
 void loadDataDefinitions()
 {
 	loadSegmentDefinitions();
 	loadTransistorDefinitions();
 	loadNodeNames();
+	loadPaletteNodes();
+	loadSpriteNodes();
 }

@@ -8,7 +8,7 @@
 string nodenamereset = "res";
 extern std::unordered_map<std::string, int> nodenames;
 
-uint8_t memory[0xFFFF];
+uint8_t memory[0x3000];
 std::unordered_map<string, bool> chrStatus;
 int lastAddress = 0;
 int lastData = 0;
@@ -29,36 +29,40 @@ vector<uint16_t> testprogram = {
 	0x00FF, // terminator
 };
 
-void initChip()
+void initChip(string state)
 {
-	memset(memory, 0, 0xFFFF);
+	memset(memory, 0, sizeof(memory));
 
-	for(node &n : nodes) {
-		n.state = false;
-		n.floating = true;
-	}
+	if(state.empty()) {
+		for(node &n : nodes) {
+			n.state = false;
+			n.floating = true;
+		}
 
-	nodes[ngnd].state = false;
-	nodes[ngnd].floating = false;
-	nodes[npwr].state = true;
-	nodes[npwr].floating = false;
+		nodes[ngnd].state = false;
+		nodes[ngnd].floating = false;
+		nodes[npwr].state = true;
+		nodes[npwr].floating = false;
 
-	for(auto kvp : transistors) {
-		kvp.second->on = (kvp.second->gate == npwr);
-	}
+		for(auto kvp : transistors) {
+			kvp.second->on = (kvp.second->gate == npwr);
+		}
 
-	setLow(nodenamereset);
-	setLow("clk0");
-	setHigh("io_ce");
-	setHigh("int");
-
-	recalcNodeList(allNodes());
-	for(int i = 0; i < 4; i++) {
-		setHigh("clk0");
+		setLow(nodenamereset);
 		setLow("clk0");
-	}
+		setHigh("io_ce");
+		setHigh("int");
 
-	setHigh(nodenamereset);
+		recalcNodeList(allNodes());
+		for(int i = 0; i < 4; i++) {
+			setHigh("clk0");
+			setLow("clk0");
+		}
+
+		setHigh(nodenamereset);
+	} else {
+		setState(state);
+	}
 
 	cycle = 0;
 	testprogramAddress = 0;
@@ -97,7 +101,7 @@ unordered_map<string, vector<int>> nodeNumberCache;
 unordered_map<string, int> bitCountCache;
 vector<string> numbers = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" };
 
-int readBits(string name, int n = 0) {
+int readBits(string name, int n) {
 	if(name.compare("cycle") == 0) {
 		return cycle;
 	}
@@ -193,15 +197,19 @@ int readDataBus() {
 }
 
 uint8_t mRead(int a) {
+	a &= 0x3FFF;
+	if(a >= 0x3000) {
+		a -= 0x1000;
+	}
 	return memory[a];
 }
 
 void mWrite(int a, int d) {
-	//vram_setCellValue(a, d);
-	// mirror all writes
-	for(int i = 0; i < 8; i++) {
-		memory[(a & 0x23FF) | (0x400 * i)] = d;
+	a &= 0x3FFF;
+	if(a >= 0x3000) {
+		a -= 0x1000;
 	}
+	memory[a] = d;
 }
 
 void handleChrBus() {
