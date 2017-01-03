@@ -27,6 +27,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.chkShowInHex = new System.Windows.Forms.CheckBox();
 			this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
@@ -1033,6 +1034,7 @@
 			this.ClientSize = new System.Drawing.Size(947, 654);
 			this.Controls.Add(this.label12);
 			this.Controls.Add(this.tableLayoutPanel2);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MinimumSize = new System.Drawing.Size(963, 692);
 			this.Name = "frmMain";
 			this.Text = "(Not so) Visual 2C02";
