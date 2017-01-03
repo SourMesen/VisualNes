@@ -1249,6 +1249,9 @@ namespace Be.Windows.Forms
 		/// Contains a state value about Insert or Write mode. When this value is true and the ByteProvider SupportsInsert is true bytes are inserted instead of overridden.
 		/// </summary>
 		bool _insertActive;
+
+		PointF _caretPos;
+
 		#endregion
 
 		#region Events
@@ -1792,11 +1795,8 @@ namespace Be.Windows.Forms
 			// define the caret width depending on InsertActive mode
 			int caretWidth = (this.InsertActive) ? 1 : (int)_charSize.Width;
 			int caretHeight = (int)_charSize.Height;
-			NativeMethods.CreateCaret(Handle, IntPtr.Zero, caretWidth, caretHeight);
 
 			UpdateCaret();
-
-			NativeMethods.ShowCaret(Handle);
 
 			_caretVisible = true;
 		}
@@ -1811,7 +1811,8 @@ namespace Be.Windows.Forms
 			long byteIndex = _bytePos - _startByte;
 			PointF p = _keyInterpreter.GetCaretPointF(byteIndex);
 			p.X += _byteCharacterPos * _charSize.Width;
-			NativeMethods.SetCaretPos((int)p.X, (int)p.Y);
+
+			_caretPos = p;
 		}
 
 		void DestroyCaret()
@@ -1821,8 +1822,8 @@ namespace Be.Windows.Forms
 
 			System.Diagnostics.Debug.WriteLine("DestroyCaret()", "HexBox");
 
-			NativeMethods.DestroyCaret();
 			_caretVisible = false;
+			this.Invalidate();
 		}
 
 		void SetCaretPosition(Point p)
@@ -2337,7 +2338,6 @@ namespace Be.Windows.Forms
 			}
 		}
 
-
 		/// <summary>
 		/// Paints the hex box.
 		/// </summary>
@@ -2358,6 +2358,12 @@ namespace Be.Windows.Forms
 
 			UpdateVisibilityBytes();
 
+			if(_caretVisible && this.Focused) {
+				int caretWidth = (this.InsertActive) ? 1 : (int)_charSize.Width;
+				int caretHeight = (int)_charSize.Height;
+				e.Graphics.FillRectangle(Brushes.Yellow, _caretPos.X - 1, _caretPos.Y, caretWidth, caretHeight);
+				e.Graphics.DrawRectangle(Pens.Gray, _caretPos.X - 1, _caretPos.Y, caretWidth, caretHeight);
+			}
 
 			if (_lineInfoVisible)
 				PaintLineInfo(e.Graphics, _startByte, _endByte);
