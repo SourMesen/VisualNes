@@ -42,6 +42,9 @@ namespace GUI
 			0x21, 0x1E,	// $1E -> $2001
 		};
 
+		private Task _emulationThread = null;
+		private bool _stopFlag = false;
+
 		private bool _vramChanged = false;
 		private bool _paletteRamChanged = false;
 		private bool _spriteRamChanged = false;
@@ -59,14 +62,14 @@ namespace GUI
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
-
+			
 			hexProgram.ByteProvider = new DynamicByteProvider(_initialProgram);
 			hexProgram.ByteProvider.Changed += (s, evt) => {
 				lock(_runLock) {
 					CoreWrapper.setProgram(((DynamicByteProvider)hexProgram.ByteProvider).Bytes.ToArray());
 				}
 			};
-
+			
 			CoreWrapper.setProgram(_initialProgram);
 			CoreWrapper.initEmulator();
 			CoreWrapper.reset(_resetStates[0]);
@@ -81,17 +84,19 @@ namespace GUI
 		protected override void OnClosed(EventArgs e)
 		{
 			Stop();
-			lock(_runLock) {
-				CoreWrapper.release();
+			_stopFlag = true;
+			if(_emulationThread != null) {
+				_emulationThread.Wait();
 			}
+			CoreWrapper.release();
 			base.OnClosed(e);
 		}
 
 		private void StartEmulationThread()
 		{
-			Task.Run(() => {
-				while(true) {
-					while(_stepsToRun > 0) {
+			_emulationThread = Task.Run(() => {
+				while(!_stopFlag) {
+					while(!_stopFlag && _stepsToRun > 0) {
 						UpdateRam();
 
 						int stepsToRun = Math.Min(_refreshSpeed, _stepsToRun);

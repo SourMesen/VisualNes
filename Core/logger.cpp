@@ -19,7 +19,7 @@ string toString(int value)
 
 void flushLog(vector<string> logVars, vector<int> logBuffer)
 {
-	if(out) {
+	if(out.is_open() && out.good()) {
 		if(loggingThread.joinable()) {
 			loggingThread.join();
 		}
