@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChipDefinitions.cs" />
     <Compile Include="CoreWrapper.cs" />
     <Compile Include="ctrlChipDisplay.cs">
       <SubType>UserControl</SubType>

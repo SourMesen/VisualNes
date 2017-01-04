@@ -11,30 +11,23 @@ namespace GUI
 	{
 		const string dllName = "Core2C02.dll";
 
-		[DllImport(dllName)]
-		public extern static void initEmulator();
-		[DllImport(dllName)]
-		public extern static void release();
+		[DllImport(dllName)] public extern static void initEmulator();
+		[DllImport(dllName)] public extern static void release();
 
-		[DllImport(dllName)]
-		[return: MarshalAs(UnmanagedType.I1)]
-		public extern static bool startLogging([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]string filename, [MarshalAs(UnmanagedType.I1)]bool logAsHex, [MarshalAs(UnmanagedType.I1)]bool logAsCsv);
-		[DllImport(dllName)]
-		public extern static void stopLogging();
+		[DllImport(dllName)] [return: MarshalAs(UnmanagedType.I1)] public extern static bool startLogging([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]string filename, [MarshalAs(UnmanagedType.I1)]bool logAsHex, [MarshalAs(UnmanagedType.I1)]bool logAsCsv);
+		[DllImport(dllName)] public extern static void stopLogging();
 
-		[DllImport(dllName)]
-		public extern static void getState(ref EmulationState state);
+		[DllImport(dllName)] [return: MarshalAs(UnmanagedType.I1)] public extern static bool isNodeHigh(int nodeNumber);
+		[DllImport(dllName)] [return: MarshalAs(UnmanagedType.I1)] public extern static bool isTransistorOn([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]string transistorName);
 
-		[DllImport(dllName)]
-		public extern static void setTrace([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]string tracedColumns);
+		[DllImport(dllName)] public extern static void getState(ref EmulationState state);
 
-		[DllImport(dllName)]
-		public extern static void step(UInt32 halfCycleCount);
-		[DllImport(dllName)]
-		public extern static void reset([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]string resetState);
+		[DllImport(dllName)] public extern static void setTrace([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]string tracedColumns);
 
-		[DllImport(dllName, EntryPoint = "getMemoryState")]
-		private static extern int getMemoryStateWrapper(MemoryType type, IntPtr buffer);
+		[DllImport(dllName)] public extern static void step(UInt32 halfCycleCount);
+		[DllImport(dllName)] public extern static void reset([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]string resetState);
+
+		[DllImport(dllName, EntryPoint = "getMemoryState")] private static extern int getMemoryStateWrapper(MemoryType type, IntPtr buffer);
 		public static byte[] getMemoryState(MemoryType type)
 		{
 			byte[] buffer = new byte[0xFFFF];
@@ -48,8 +41,7 @@ namespace GUI
 			return buffer;
 		}
 
-		[DllImport(dllName, EntryPoint = "setMemoryState")]
-		private static extern void setMemoryStateWrapper(MemoryType type, IntPtr buffer, Int32 length);
+		[DllImport(dllName, EntryPoint = "setMemoryState")] private static extern void setMemoryStateWrapper(MemoryType type, IntPtr buffer, Int32 length);
 		public static void setMemoryState(MemoryType type, byte[] data)
 		{
 			GCHandle handle = GCHandle.Alloc(data, GCHandleType.Pinned);
@@ -60,8 +52,7 @@ namespace GUI
 			}
 		}
 
-		[DllImport(dllName, EntryPoint = "setProgram")]
-		private static extern void setProgramWrapper(IntPtr buffer, UInt32 length);
+		[DllImport(dllName, EntryPoint = "setProgram")] private static extern void setProgramWrapper(IntPtr buffer, UInt32 length);
 		public static void setProgram(byte[] data)
 		{
 			GCHandle handle = GCHandle.Alloc(data, GCHandleType.Pinned);

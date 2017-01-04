@@ -28,7 +28,7 @@ namespace GUI
 		private bool _vramChanged = false;
 		private bool _paletteRamChanged = false;
 		private bool _spriteRamChanged = false;
-		private int _refreshSpeed = 2000;
+		private int _refreshSpeed = 4000;
 		private bool _logging = false;
 		private byte[] _vramData;
 		private byte[] _paletteData;
@@ -82,8 +82,6 @@ namespace GUI
 			Step(1);
 
 			StartEmulationThread();
-
-			ctrlChipDisplay.InitDisplay();
 		}
 
 		protected override void OnClosed(EventArgs e)
@@ -115,6 +113,10 @@ namespace GUI
 							_vramData = CoreWrapper.getMemoryState(MemoryType.Vram);
 							_paletteData = CoreWrapper.getMemoryState(MemoryType.PaletteRam);
 							_spriteData = CoreWrapper.getMemoryState(MemoryType.SpriteRam);
+							if(chkShowSimulationState.Checked) {
+								ctrlChipDisplay.ShowState = true;
+								ctrlChipDisplay.RefreshState(true);
+							}
 							sw.Stop();
 						}
 
@@ -478,6 +480,11 @@ namespace GUI
 				chkShowDiffusion.Checked, chkShowGroundedDiffusion.Checked, chkShowPoweredDiffusion.Checked, 
 				chkShowPolysilicon.Checked, chkShowMetal.Checked, chkShowProtection.Checked
 			);
+		}
+
+		private void chkAnimate_CheckedChanged(object sender, EventArgs e)
+		{
+			ctrlChipDisplay.ShowState = chkShowSimulationState.Checked;
 		}
 	}
 }

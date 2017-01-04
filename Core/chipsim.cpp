@@ -175,8 +175,13 @@ bool getNodeValue() {
 }
 
 
-bool isNodeHigh(int nn) {
+bool isNodeHigh(int32_t nn) {
 	return(nodes[nn].state);
+}
+
+bool isTransistorOn(char* transistorName)
+{
+	return transistors[transistorName]->on;
 }
 
 shared_ptr<vector<int>> allNodes() {

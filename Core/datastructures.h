@@ -24,7 +24,7 @@ struct transistor
 
 struct node
 {
-	vector<int> segs;
+	vector<vector<int>> segs;
 	int num = -1;
 	bool pullup = false;
 	bool pulldown = false;
