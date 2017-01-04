@@ -12,6 +12,8 @@
 vector<string> logVars = { "cycle" ,"hpos", "vpos", "vbl_flag", "spr0_hit", "spr_overflow", "vramaddr_t", "vramaddr_v", "io_db", "io_ab", "io_rw", "io_ce", "rd", "wr", "ab", "ale", "db" };
 std::deque<int32_t> recentLog;
 string chipState;
+const int spriteRamSize = 0x120;
+const int paletteRamSize = 0x20;
 
 enum class MemoryType
 {
@@ -69,16 +71,16 @@ DllExport int32_t getMemoryState(MemoryType memoryType, uint8_t *buffer)
 			return sizeof(memory);
 
 		case MemoryType::PaletteRam:
-			for(int i = 0; i < 0x20; i++) {
+			for(int i = 0; i < paletteRamSize; i++) {
 				buffer[i] = palette_read(i);
 			}
-			return 0x20;
+			return paletteRamSize;
 
 		case MemoryType::SpriteRam:
-			for(int i = 0; i < 0x100; i++) {
+			for(int i = 0; i < spriteRamSize; i++) {
 				buffer[i] = sprite_read(i);
 			}
-			return 0x100;
+			return spriteRamSize;
 
 		case MemoryType::FullState:
 			string state = getSaveState();
@@ -87,7 +89,7 @@ DllExport int32_t getMemoryState(MemoryType memoryType, uint8_t *buffer)
 			buffer += getMemoryState(MemoryType::Vram, buffer);
 			buffer += getMemoryState(MemoryType::PaletteRam, buffer);
 			buffer += getMemoryState(MemoryType::SpriteRam, buffer);
-			return (int32_t)(state.size() + sizeof(memory) + 0x20 + 0x100);
+			return (int32_t)(state.size() + sizeof(memory) + paletteRamSize + spriteRamSize);
 	}
 
 	return 0;
@@ -99,20 +101,20 @@ DllExport void setMemoryState(MemoryType memoryType, uint8_t *buffer, int32_t le
 		case MemoryType::Vram: memcpy(memory, buffer, std::min(length, (int32_t)sizeof(memory))); break;
 
 		case MemoryType::PaletteRam:
-			for(int i = 0; i < 0x20 && i < length; i++) {
+			for(int i = 0; i < paletteRamSize && i < length; i++) {
 				palette_write(i, buffer[i]);
 			}
 			break;
 
 		case MemoryType::SpriteRam:
-			for(int i = 0; i < 0x100 && i < length; i++) {
+			for(int i = 0; i < spriteRamSize && i < length; i++) {
 				sprite_write(i, buffer[i]);
 			}
 			break;
 
 		case MemoryType::FullState:
 			size_t stateSize = getStateString().size();
-			if(length >= (int32_t)(stateSize + sizeof(memory) + 0x20 + 0x100)) {
+			if(length >= (int32_t)(stateSize + sizeof(memory) + paletteRamSize + spriteRamSize)) {
 				char* state = new char[stateSize + 1];
 				memcpy(state, buffer, stateSize);
 				state[stateSize] = 0;
@@ -120,9 +122,9 @@ DllExport void setMemoryState(MemoryType memoryType, uint8_t *buffer, int32_t le
 				buffer += stateSize;
 				setMemoryState(MemoryType::Vram, buffer, sizeof(memory));
 				buffer += sizeof(memory);
-				setMemoryState(MemoryType::PaletteRam, buffer, 0x20);
+				setMemoryState(MemoryType::PaletteRam, buffer, paletteRamSize);
 				buffer += 0x20;
-				setMemoryState(MemoryType::SpriteRam, buffer, 0x100);
+				setMemoryState(MemoryType::SpriteRam, buffer, spriteRamSize);
 			}
 			break;
 	}

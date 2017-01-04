@@ -420,7 +420,7 @@ namespace GUI
 
 		private void btnResetSprite_Click(object sender, EventArgs e)
 		{
-			SetMemoryState(MemoryType.SpriteRam, new byte[0x100]);
+			SetMemoryState(MemoryType.SpriteRam, new byte[0x120]);
 		}
 
 		private void btnImportSprite_Click(object sender, EventArgs e)
