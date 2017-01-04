@@ -45,7 +45,6 @@ namespace GUI
 				_chipDef = new ChipDefinitions();
 				RenderChip();
 				tmrDrawChip.Enabled = true;
-				this.MouseWheel += picChip_MouseWheel;
 			}
 		}
 
@@ -205,7 +204,7 @@ namespace GUI
 		{
 			UpdateViewportImage();
 
-			if(_needRefresh) {
+			if(_needRefresh && _imgBackground != null) {
 				using(Graphics g = Graphics.FromImage(picChip.Image)) {
 					g.DrawImage(_imgViewport, 0, 0);
 
@@ -372,7 +371,7 @@ namespace GUI
 		private void picChip_MouseUp(object sender, MouseEventArgs e)
 		{
 			_isDragging = false;
-			if(!_dragged && e.Clicks == 1) {
+			if(!_dragged) {
 				FindNodeAtLocation(e.Location, ModifierKeys.HasFlag(Keys.Shift));
 			}
 		}
@@ -400,6 +399,17 @@ namespace GUI
 		{
 			RefreshPicture();
 		}
+
+		private void picChip_MouseEnter(object sender, EventArgs e)
+		{
+			this.MouseWheel += picChip_MouseWheel;
+		}
+
+		private void picChip_MouseLeave(object sender, EventArgs e)
+		{
+			this.MouseWheel -= picChip_MouseWheel;
+		}
 		#endregion
+
 	}
 }

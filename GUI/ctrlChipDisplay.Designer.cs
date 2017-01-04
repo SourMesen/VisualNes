@@ -47,6 +47,8 @@
 			this.picChip.MouseClick += new System.Windows.Forms.MouseEventHandler(this.picChip_MouseClick);
 			this.picChip.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.picChip_MouseDoubleClick);
 			this.picChip.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picChip_MouseDown);
+			this.picChip.MouseEnter += new System.EventHandler(this.picChip_MouseEnter);
+			this.picChip.MouseLeave += new System.EventHandler(this.picChip_MouseLeave);
 			this.picChip.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picChip_MouseMove);
 			this.picChip.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picChip_MouseUp);
 			// 
