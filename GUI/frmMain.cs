@@ -82,6 +82,8 @@ namespace GUI
 			Step(1);
 
 			StartEmulationThread();
+
+			ctrlChipDisplay.InitDisplay();
 		}
 
 		protected override void OnClosed(EventArgs e)
@@ -458,7 +460,7 @@ namespace GUI
 			});
 		}
 
-		public void SetMemoryState(MemoryType type, byte[] data)
+		private void SetMemoryState(MemoryType type, byte[] data)
 		{
 			lock(_runLock) {
 				UpdateRam();
@@ -468,6 +470,14 @@ namespace GUI
 				_spriteData = CoreWrapper.getMemoryState(MemoryType.SpriteRam);
 			}
 			UpdateMemoryViews();
+		}
+
+		private void chkShowLayer_CheckedChanged(object sender, EventArgs e)
+		{
+			this.ctrlChipDisplay.SetVisibleLayers(
+				chkShowDiffusion.Checked, chkShowGroundedDiffusion.Checked, chkShowPoweredDiffusion.Checked, 
+				chkShowPolysilicon.Checked, chkShowMetal.Checked, chkShowProtection.Checked
+			);
 		}
 	}
 }

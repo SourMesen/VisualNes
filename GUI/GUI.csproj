@@ -75,6 +75,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CoreWrapper.cs" />
+    <Compile Include="ctrlChipDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctrlChipDisplay.Designer.cs">
+      <DependentUpon>ctrlChipDisplay.cs</DependentUpon>
+    </Compile>
     <Compile Include="DoubleBufferedListView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -115,6 +121,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UTF8Marshaler.cs" />
+    <EmbeddedResource Include="ctrlChipDisplay.resx">
+      <DependentUpon>ctrlChipDisplay.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>

@@ -57,7 +57,6 @@
 			this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
 			this.label5 = new System.Windows.Forms.Label();
 			this.lblClk = new System.Windows.Forms.Label();
-			this.lstLogView = new GUI.DoubleBufferedListView();
 			this.btnSelectColumns = new System.Windows.Forms.Button();
 			this.flowLayoutPanel9 = new System.Windows.Forms.FlowLayoutPanel();
 			this.chkLogHex = new System.Windows.Forms.CheckBox();
@@ -68,7 +67,6 @@
 			this.btnResetPalette = new System.Windows.Forms.Button();
 			this.btnImportPalette = new System.Windows.Forms.Button();
 			this.btnExportPalette = new System.Windows.Forms.Button();
-			this.hexPaletteRam = new Be.Windows.Forms.HexBox();
 			this.label6 = new System.Windows.Forms.Label();
 			this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
 			this.flowLayoutPanel12 = new System.Windows.Forms.FlowLayoutPanel();
@@ -76,16 +74,13 @@
 			this.btnImportSprite = new System.Windows.Forms.Button();
 			this.btnExportSprite = new System.Windows.Forms.Button();
 			this.label8 = new System.Windows.Forms.Label();
-			this.hexSpriteRam = new Be.Windows.Forms.HexBox();
 			this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
 			this.flowLayoutPanel13 = new System.Windows.Forms.FlowLayoutPanel();
 			this.btnResetVram = new System.Windows.Forms.Button();
 			this.btnImportVram = new System.Windows.Forms.Button();
 			this.btnExportVram = new System.Windows.Forms.Button();
 			this.label10 = new System.Windows.Forms.Label();
-			this.hexVram = new Be.Windows.Forms.HexBox();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.grpReset = new System.Windows.Forms.GroupBox();
 			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
 			this.radResetPostrenderOdd = new System.Windows.Forms.RadioButton();
@@ -100,9 +95,27 @@
 			this.label11 = new System.Windows.Forms.Label();
 			this.cboRefreshSpeed = new System.Windows.Forms.ComboBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.hexProgram = new Be.Windows.Forms.HexBox();
 			this.label13 = new System.Windows.Forms.Label();
+			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+			this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+			this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
+			this.chkAnimate = new System.Windows.Forms.CheckBox();
+			this.flowLayoutPanel14 = new System.Windows.Forms.FlowLayoutPanel();
 			this.label12 = new System.Windows.Forms.Label();
+			this.chkShowDiffusion = new System.Windows.Forms.CheckBox();
+			this.chkShowGroundedDiffusion = new System.Windows.Forms.CheckBox();
+			this.chkShowPoweredDiffusion = new System.Windows.Forms.CheckBox();
+			this.label14 = new System.Windows.Forms.Label();
+			this.chkShowPolysilicon = new System.Windows.Forms.CheckBox();
+			this.chkShowMetal = new System.Windows.Forms.CheckBox();
+			this.chkShowProtection = new System.Windows.Forms.CheckBox();
+			this.ctrlChipDisplay = new GUI.ctrlChipDisplay();
+			this.hexProgram = new Be.Windows.Forms.HexBox();
+			this.lstLogView = new GUI.DoubleBufferedListView();
+			this.hexPaletteRam = new Be.Windows.Forms.HexBox();
+			this.hexSpriteRam = new Be.Windows.Forms.HexBox();
+			this.hexVram = new Be.Windows.Forms.HexBox();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.flowLayoutPanel4.SuspendLayout();
 			this.flowLayoutPanel3.SuspendLayout();
@@ -120,12 +133,22 @@
 			this.tableLayoutPanel7.SuspendLayout();
 			this.flowLayoutPanel13.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.grpReset.SuspendLayout();
 			this.tableLayoutPanel3.SuspendLayout();
 			this.tableLayoutPanel4.SuspendLayout();
 			this.flowLayoutPanel10.SuspendLayout();
 			this.groupBox1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+			this.splitContainer1.Panel1.SuspendLayout();
+			this.splitContainer1.Panel2.SuspendLayout();
+			this.splitContainer1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+			this.splitContainer2.Panel1.SuspendLayout();
+			this.splitContainer2.Panel2.SuspendLayout();
+			this.splitContainer2.SuspendLayout();
+			this.tableLayoutPanel8.SuspendLayout();
+			this.tableLayoutPanel9.SuspendLayout();
+			this.flowLayoutPanel14.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tableLayoutPanel1
@@ -151,7 +174,7 @@
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel6, 0, 5);
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel7, 0, 6);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanel1.Location = new System.Drawing.Point(284, 3);
+			this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 9;
 			this.tableLayoutPanel2.SetRowSpan(this.tableLayoutPanel1, 4);
@@ -165,7 +188,7 @@
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(660, 648);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(657, 655);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// chkShowInHex
@@ -447,19 +470,6 @@
 			this.lblClk.TabIndex = 1;
 			this.lblClk.Text = "0";
 			// 
-			// lstLogView
-			// 
-			this.tableLayoutPanel1.SetColumnSpan(this.lstLogView, 4);
-			this.lstLogView.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lstLogView.FullRowSelect = true;
-			this.lstLogView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-			this.lstLogView.Location = new System.Drawing.Point(3, 438);
-			this.lstLogView.Name = "lstLogView";
-			this.lstLogView.Size = new System.Drawing.Size(654, 207);
-			this.lstLogView.TabIndex = 12;
-			this.lstLogView.UseCompatibleStateImageBehavior = false;
-			this.lstLogView.View = System.Windows.Forms.View.Details;
-			// 
 			// btnSelectColumns
 			// 
 			this.btnSelectColumns.Location = new System.Drawing.Point(3, 409);
@@ -478,7 +488,7 @@
 			this.flowLayoutPanel9.Controls.Add(this.chkLogHex);
 			this.flowLayoutPanel9.Controls.Add(this.chkLogCsv);
 			this.flowLayoutPanel9.Controls.Add(this.btnStartLogging);
-			this.flowLayoutPanel9.Location = new System.Drawing.Point(380, 406);
+			this.flowLayoutPanel9.Location = new System.Drawing.Point(377, 406);
 			this.flowLayoutPanel9.Margin = new System.Windows.Forms.Padding(0);
 			this.flowLayoutPanel9.Name = "flowLayoutPanel9";
 			this.flowLayoutPanel9.Size = new System.Drawing.Size(280, 29);
@@ -533,7 +543,7 @@
 			this.tableLayoutPanel5.Name = "tableLayoutPanel5";
 			this.tableLayoutPanel5.RowCount = 1;
 			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel5.Size = new System.Drawing.Size(658, 44);
+			this.tableLayoutPanel5.Size = new System.Drawing.Size(653, 44);
 			this.tableLayoutPanel5.TabIndex = 18;
 			// 
 			// flowLayoutPanel11
@@ -543,7 +553,7 @@
 			this.flowLayoutPanel11.Controls.Add(this.btnResetPalette);
 			this.flowLayoutPanel11.Controls.Add(this.btnImportPalette);
 			this.flowLayoutPanel11.Controls.Add(this.btnExportPalette);
-			this.flowLayoutPanel11.Location = new System.Drawing.Point(580, 7);
+			this.flowLayoutPanel11.Location = new System.Drawing.Point(575, 7);
 			this.flowLayoutPanel11.Margin = new System.Windows.Forms.Padding(0);
 			this.flowLayoutPanel11.Name = "flowLayoutPanel11";
 			this.flowLayoutPanel11.Size = new System.Drawing.Size(78, 29);
@@ -586,17 +596,6 @@
 			this.btnExportPalette.UseVisualStyleBackColor = true;
 			this.btnExportPalette.Click += new System.EventHandler(this.btnExportPalette_Click);
 			// 
-			// hexPaletteRam
-			// 
-			this.hexPaletteRam.Font = new System.Drawing.Font("Segoe UI", 9F);
-			this.hexPaletteRam.LineInfoVisible = true;
-			this.hexPaletteRam.Location = new System.Drawing.Point(83, 3);
-			this.hexPaletteRam.Name = "hexPaletteRam";
-			this.hexPaletteRam.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
-			this.hexPaletteRam.Size = new System.Drawing.Size(494, 38);
-			this.hexPaletteRam.TabIndex = 17;
-			this.hexPaletteRam.UseFixedBytesPerLine = true;
-			// 
 			// label6
 			// 
 			this.label6.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -623,7 +622,7 @@
 			this.tableLayoutPanel6.Name = "tableLayoutPanel6";
 			this.tableLayoutPanel6.RowCount = 1;
 			this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel6.Size = new System.Drawing.Size(658, 79);
+			this.tableLayoutPanel6.Size = new System.Drawing.Size(653, 79);
 			this.tableLayoutPanel6.TabIndex = 19;
 			// 
 			// flowLayoutPanel12
@@ -633,7 +632,7 @@
 			this.flowLayoutPanel12.Controls.Add(this.btnResetSprite);
 			this.flowLayoutPanel12.Controls.Add(this.btnImportSprite);
 			this.flowLayoutPanel12.Controls.Add(this.btnExportSprite);
-			this.flowLayoutPanel12.Location = new System.Drawing.Point(580, 25);
+			this.flowLayoutPanel12.Location = new System.Drawing.Point(575, 25);
 			this.flowLayoutPanel12.Margin = new System.Windows.Forms.Padding(0);
 			this.flowLayoutPanel12.Name = "flowLayoutPanel12";
 			this.flowLayoutPanel12.Size = new System.Drawing.Size(78, 29);
@@ -686,18 +685,6 @@
 			this.label8.TabIndex = 21;
 			this.label8.Text = "Sprite RAM:";
 			// 
-			// hexSpriteRam
-			// 
-			this.hexSpriteRam.Font = new System.Drawing.Font("Segoe UI", 9F);
-			this.hexSpriteRam.LineInfoVisible = true;
-			this.hexSpriteRam.Location = new System.Drawing.Point(83, 3);
-			this.hexSpriteRam.Name = "hexSpriteRam";
-			this.hexSpriteRam.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
-			this.hexSpriteRam.Size = new System.Drawing.Size(494, 73);
-			this.hexSpriteRam.TabIndex = 16;
-			this.hexSpriteRam.UseFixedBytesPerLine = true;
-			this.hexSpriteRam.VScrollBarVisible = true;
-			// 
 			// tableLayoutPanel7
 			// 
 			this.tableLayoutPanel7.AutoSize = true;
@@ -714,7 +701,7 @@
 			this.tableLayoutPanel7.Name = "tableLayoutPanel7";
 			this.tableLayoutPanel7.RowCount = 1;
 			this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel7.Size = new System.Drawing.Size(658, 195);
+			this.tableLayoutPanel7.Size = new System.Drawing.Size(653, 195);
 			this.tableLayoutPanel7.TabIndex = 20;
 			// 
 			// flowLayoutPanel13
@@ -724,7 +711,7 @@
 			this.flowLayoutPanel13.Controls.Add(this.btnResetVram);
 			this.flowLayoutPanel13.Controls.Add(this.btnImportVram);
 			this.flowLayoutPanel13.Controls.Add(this.btnExportVram);
-			this.flowLayoutPanel13.Location = new System.Drawing.Point(580, 83);
+			this.flowLayoutPanel13.Location = new System.Drawing.Point(575, 83);
 			this.flowLayoutPanel13.Margin = new System.Windows.Forms.Padding(0);
 			this.flowLayoutPanel13.Name = "flowLayoutPanel13";
 			this.flowLayoutPanel13.Size = new System.Drawing.Size(78, 29);
@@ -777,29 +764,12 @@
 			this.label10.TabIndex = 22;
 			this.label10.Text = "VRAM:";
 			// 
-			// hexVram
-			// 
-			this.hexVram.ColumnInfoVisible = true;
-			this.hexVram.Font = new System.Drawing.Font("Segoe UI", 9F);
-			this.hexVram.LineInfoVisible = true;
-			this.hexVram.Location = new System.Drawing.Point(83, 3);
-			this.hexVram.Name = "hexVram";
-			this.hexVram.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
-			this.hexVram.Size = new System.Drawing.Size(494, 189);
-			this.hexVram.TabIndex = 4;
-			this.hexVram.UseFixedBytesPerLine = true;
-			this.hexVram.VScrollBarVisible = true;
-			// 
 			// tableLayoutPanel2
 			// 
-			this.tableLayoutPanel2.ColumnCount = 2;
-			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.tableLayoutPanel2.ColumnCount = 1;
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.Controls.Add(this.pictureBox1, 0, 0);
-			this.tableLayoutPanel2.Controls.Add(this.grpReset, 0, 1);
-			this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 1, 0);
-			this.tableLayoutPanel2.Controls.Add(this.flowLayoutPanel10, 0, 2);
-			this.tableLayoutPanel2.Controls.Add(this.groupBox1, 0, 3);
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 0, 0);
 			this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -808,24 +778,16 @@
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.Size = new System.Drawing.Size(947, 654);
+			this.tableLayoutPanel2.Size = new System.Drawing.Size(663, 661);
 			this.tableLayoutPanel2.TabIndex = 3;
-			// 
-			// pictureBox1
-			// 
-			this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(275, 219);
-			this.pictureBox1.TabIndex = 3;
-			this.pictureBox1.TabStop = false;
 			// 
 			// grpReset
 			// 
 			this.grpReset.Controls.Add(this.tableLayoutPanel3);
-			this.grpReset.Location = new System.Drawing.Point(3, 228);
+			this.grpReset.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.grpReset.Location = new System.Drawing.Point(3, 72);
 			this.grpReset.Name = "grpReset";
-			this.grpReset.Size = new System.Drawing.Size(275, 154);
+			this.grpReset.Size = new System.Drawing.Size(234, 154);
 			this.grpReset.TabIndex = 4;
 			this.grpReset.TabStop = false;
 			this.grpReset.Text = "Reset State";
@@ -849,7 +811,7 @@
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel3.Size = new System.Drawing.Size(269, 135);
+			this.tableLayoutPanel3.Size = new System.Drawing.Size(228, 135);
 			this.tableLayoutPanel3.TabIndex = 0;
 			// 
 			// radResetPostrenderOdd
@@ -910,7 +872,7 @@
 			this.tableLayoutPanel4.Name = "tableLayoutPanel4";
 			this.tableLayoutPanel4.RowCount = 1;
 			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel4.Size = new System.Drawing.Size(269, 31);
+			this.tableLayoutPanel4.Size = new System.Drawing.Size(228, 31);
 			this.tableLayoutPanel4.TabIndex = 8;
 			// 
 			// btnSaveState
@@ -939,7 +901,7 @@
 			// 
 			this.btnReset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnReset.Image = global::GUI.Properties.Resources.view_refresh;
-			this.btnReset.Location = new System.Drawing.Point(235, 3);
+			this.btnReset.Location = new System.Drawing.Point(194, 3);
 			this.btnReset.Name = "btnReset";
 			this.btnReset.Size = new System.Drawing.Size(31, 25);
 			this.btnReset.TabIndex = 7;
@@ -951,11 +913,11 @@
 			this.flowLayoutPanel10.AutoSize = true;
 			this.flowLayoutPanel10.Controls.Add(this.label11);
 			this.flowLayoutPanel10.Controls.Add(this.cboRefreshSpeed);
-			this.flowLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Top;
-			this.flowLayoutPanel10.Location = new System.Drawing.Point(0, 385);
+			this.flowLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.flowLayoutPanel10.Location = new System.Drawing.Point(0, 229);
 			this.flowLayoutPanel10.Margin = new System.Windows.Forms.Padding(0);
 			this.flowLayoutPanel10.Name = "flowLayoutPanel10";
-			this.flowLayoutPanel10.Size = new System.Drawing.Size(281, 27);
+			this.flowLayoutPanel10.Size = new System.Drawing.Size(240, 27);
 			this.flowLayoutPanel10.TabIndex = 5;
 			// 
 			// label11
@@ -987,57 +949,309 @@
 			this.groupBox1.Controls.Add(this.hexProgram);
 			this.groupBox1.Controls.Add(this.label13);
 			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.groupBox1.Location = new System.Drawing.Point(3, 415);
+			this.groupBox1.Location = new System.Drawing.Point(243, 3);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(275, 236);
+			this.tableLayoutPanel8.SetRowSpan(this.groupBox1, 4);
+			this.groupBox1.Size = new System.Drawing.Size(234, 259);
 			this.groupBox1.TabIndex = 6;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Test Program";
-			// 
-			// hexProgram
-			// 
-			this.hexProgram.BytesPerLine = 2;
-			this.hexProgram.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.hexProgram.Font = new System.Drawing.Font("Segoe UI", 9F);
-			this.hexProgram.LineInfoVisible = true;
-			this.hexProgram.Location = new System.Drawing.Point(3, 56);
-			this.hexProgram.Name = "hexProgram";
-			this.hexProgram.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
-			this.hexProgram.Size = new System.Drawing.Size(269, 177);
-			this.hexProgram.TabIndex = 5;
-			this.hexProgram.UseFixedBytesPerLine = true;
-			this.hexProgram.VScrollBarVisible = true;
 			// 
 			// label13
 			// 
 			this.label13.Dock = System.Windows.Forms.DockStyle.Top;
 			this.label13.Location = new System.Drawing.Point(3, 16);
 			this.label13.Name = "label13";
-			this.label13.Size = new System.Drawing.Size(269, 40);
+			this.label13.Size = new System.Drawing.Size(228, 53);
 			this.label13.TabIndex = 0;
 			this.label13.Text = "Format: ABCC\r\nA: 0/1 = idle, 2 = write, 3 = read, B: 0-7 (reg number)\r\nCC: value " +
     "(ignored for read)";
 			// 
+			// splitContainer1
+			// 
+			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+			this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+			this.splitContainer1.Name = "splitContainer1";
+			// 
+			// splitContainer1.Panel1
+			// 
+			this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
+			// 
+			// splitContainer1.Panel2
+			// 
+			this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel2);
+			this.splitContainer1.Size = new System.Drawing.Size(1147, 661);
+			this.splitContainer1.SplitterDistance = 480;
+			this.splitContainer1.TabIndex = 4;
+			// 
+			// splitContainer2
+			// 
+			this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+			this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+			this.splitContainer2.Name = "splitContainer2";
+			this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+			// 
+			// splitContainer2.Panel1
+			// 
+			this.splitContainer2.Panel1.Controls.Add(this.ctrlChipDisplay);
+			// 
+			// splitContainer2.Panel2
+			// 
+			this.splitContainer2.Panel2.Controls.Add(this.tableLayoutPanel8);
+			this.splitContainer2.Size = new System.Drawing.Size(480, 661);
+			this.splitContainer2.SplitterDistance = 392;
+			this.splitContainer2.TabIndex = 5;
+			// 
+			// tableLayoutPanel8
+			// 
+			this.tableLayoutPanel8.ColumnCount = 2;
+			this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel8.Controls.Add(this.grpReset, 0, 1);
+			this.tableLayoutPanel8.Controls.Add(this.flowLayoutPanel10, 0, 2);
+			this.tableLayoutPanel8.Controls.Add(this.groupBox1, 1, 0);
+			this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel9, 0, 0);
+			this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel8.Location = new System.Drawing.Point(0, 0);
+			this.tableLayoutPanel8.Name = "tableLayoutPanel8";
+			this.tableLayoutPanel8.RowCount = 4;
+			this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel8.Size = new System.Drawing.Size(480, 265);
+			this.tableLayoutPanel8.TabIndex = 5;
+			// 
+			// tableLayoutPanel9
+			// 
+			this.tableLayoutPanel9.ColumnCount = 1;
+			this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel9.Controls.Add(this.chkAnimate, 0, 1);
+			this.tableLayoutPanel9.Controls.Add(this.flowLayoutPanel14, 0, 0);
+			this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel9.Location = new System.Drawing.Point(0, 0);
+			this.tableLayoutPanel9.Margin = new System.Windows.Forms.Padding(0);
+			this.tableLayoutPanel9.Name = "tableLayoutPanel9";
+			this.tableLayoutPanel9.RowCount = 3;
+			this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel9.Size = new System.Drawing.Size(240, 69);
+			this.tableLayoutPanel9.TabIndex = 7;
+			// 
+			// chkAnimate
+			// 
+			this.chkAnimate.AutoSize = true;
+			this.chkAnimate.Location = new System.Drawing.Point(3, 75);
+			this.chkAnimate.Name = "chkAnimate";
+			this.chkAnimate.Size = new System.Drawing.Size(145, 17);
+			this.chkAnimate.TabIndex = 6;
+			this.chkAnimate.Text = "Animate during simulation";
+			this.chkAnimate.UseVisualStyleBackColor = true;
+			// 
+			// flowLayoutPanel14
+			// 
+			this.flowLayoutPanel14.Controls.Add(this.label12);
+			this.flowLayoutPanel14.Controls.Add(this.chkShowDiffusion);
+			this.flowLayoutPanel14.Controls.Add(this.chkShowGroundedDiffusion);
+			this.flowLayoutPanel14.Controls.Add(this.chkShowPoweredDiffusion);
+			this.flowLayoutPanel14.Controls.Add(this.label14);
+			this.flowLayoutPanel14.Controls.Add(this.chkShowPolysilicon);
+			this.flowLayoutPanel14.Controls.Add(this.chkShowMetal);
+			this.flowLayoutPanel14.Controls.Add(this.chkShowProtection);
+			this.flowLayoutPanel14.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.flowLayoutPanel14.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+			this.flowLayoutPanel14.Location = new System.Drawing.Point(5, 3);
+			this.flowLayoutPanel14.Margin = new System.Windows.Forms.Padding(5, 3, 0, 0);
+			this.flowLayoutPanel14.Name = "flowLayoutPanel14";
+			this.flowLayoutPanel14.Size = new System.Drawing.Size(235, 69);
+			this.flowLayoutPanel14.TabIndex = 1;
+			// 
 			// label12
 			// 
+			this.label12.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.label12.AutoSize = true;
-			this.label12.Location = new System.Drawing.Point(93, 106);
+			this.label12.Location = new System.Drawing.Point(3, 0);
 			this.label12.Name = "label12";
-			this.label12.Size = new System.Drawing.Size(97, 13);
-			this.label12.TabIndex = 4;
-			this.label12.Text = "(insert picture here)";
+			this.label12.Size = new System.Drawing.Size(37, 13);
+			this.label12.TabIndex = 0;
+			this.label12.Text = "Show:";
+			// 
+			// chkShowDiffusion
+			// 
+			this.chkShowDiffusion.AutoSize = true;
+			this.chkShowDiffusion.Checked = true;
+			this.chkShowDiffusion.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chkShowDiffusion.Location = new System.Drawing.Point(0, 13);
+			this.chkShowDiffusion.Margin = new System.Windows.Forms.Padding(0);
+			this.chkShowDiffusion.Name = "chkShowDiffusion";
+			this.chkShowDiffusion.Size = new System.Drawing.Size(67, 17);
+			this.chkShowDiffusion.TabIndex = 2;
+			this.chkShowDiffusion.Text = "Diffusion";
+			this.chkShowDiffusion.UseVisualStyleBackColor = true;
+			this.chkShowDiffusion.CheckedChanged += new System.EventHandler(this.chkShowLayer_CheckedChanged);
+			// 
+			// chkShowGroundedDiffusion
+			// 
+			this.chkShowGroundedDiffusion.AutoSize = true;
+			this.chkShowGroundedDiffusion.Checked = true;
+			this.chkShowGroundedDiffusion.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chkShowGroundedDiffusion.Location = new System.Drawing.Point(0, 30);
+			this.chkShowGroundedDiffusion.Margin = new System.Windows.Forms.Padding(0);
+			this.chkShowGroundedDiffusion.Name = "chkShowGroundedDiffusion";
+			this.chkShowGroundedDiffusion.Size = new System.Drawing.Size(95, 17);
+			this.chkShowGroundedDiffusion.TabIndex = 3;
+			this.chkShowGroundedDiffusion.Text = "Grounded Diff.";
+			this.chkShowGroundedDiffusion.UseVisualStyleBackColor = true;
+			this.chkShowGroundedDiffusion.CheckedChanged += new System.EventHandler(this.chkShowLayer_CheckedChanged);
+			// 
+			// chkShowPoweredDiffusion
+			// 
+			this.chkShowPoweredDiffusion.AutoSize = true;
+			this.chkShowPoweredDiffusion.Checked = true;
+			this.chkShowPoweredDiffusion.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chkShowPoweredDiffusion.Location = new System.Drawing.Point(0, 47);
+			this.chkShowPoweredDiffusion.Margin = new System.Windows.Forms.Padding(0);
+			this.chkShowPoweredDiffusion.Name = "chkShowPoweredDiffusion";
+			this.chkShowPoweredDiffusion.Size = new System.Drawing.Size(78, 17);
+			this.chkShowPoweredDiffusion.TabIndex = 4;
+			this.chkShowPoweredDiffusion.Text = "Power Diff.";
+			this.chkShowPoweredDiffusion.UseVisualStyleBackColor = true;
+			this.chkShowPoweredDiffusion.CheckedChanged += new System.EventHandler(this.chkShowLayer_CheckedChanged);
+			// 
+			// label14
+			// 
+			this.label14.Anchor = System.Windows.Forms.AnchorStyles.Left;
+			this.label14.AutoSize = true;
+			this.label14.Location = new System.Drawing.Point(98, 0);
+			this.label14.Name = "label14";
+			this.label14.Size = new System.Drawing.Size(0, 13);
+			this.label14.TabIndex = 8;
+			// 
+			// chkShowPolysilicon
+			// 
+			this.chkShowPolysilicon.AutoSize = true;
+			this.chkShowPolysilicon.Checked = true;
+			this.chkShowPolysilicon.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chkShowPolysilicon.Location = new System.Drawing.Point(95, 13);
+			this.chkShowPolysilicon.Margin = new System.Windows.Forms.Padding(0);
+			this.chkShowPolysilicon.Name = "chkShowPolysilicon";
+			this.chkShowPolysilicon.Size = new System.Drawing.Size(75, 17);
+			this.chkShowPolysilicon.TabIndex = 5;
+			this.chkShowPolysilicon.Text = "Polysilicon";
+			this.chkShowPolysilicon.UseVisualStyleBackColor = true;
+			this.chkShowPolysilicon.CheckedChanged += new System.EventHandler(this.chkShowLayer_CheckedChanged);
+			// 
+			// chkShowMetal
+			// 
+			this.chkShowMetal.AutoSize = true;
+			this.chkShowMetal.Checked = true;
+			this.chkShowMetal.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chkShowMetal.Location = new System.Drawing.Point(95, 30);
+			this.chkShowMetal.Margin = new System.Windows.Forms.Padding(0);
+			this.chkShowMetal.Name = "chkShowMetal";
+			this.chkShowMetal.Size = new System.Drawing.Size(52, 17);
+			this.chkShowMetal.TabIndex = 6;
+			this.chkShowMetal.Text = "Metal";
+			this.chkShowMetal.UseVisualStyleBackColor = true;
+			this.chkShowMetal.CheckedChanged += new System.EventHandler(this.chkShowLayer_CheckedChanged);
+			// 
+			// chkShowProtection
+			// 
+			this.chkShowProtection.AutoSize = true;
+			this.chkShowProtection.Checked = true;
+			this.chkShowProtection.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chkShowProtection.Location = new System.Drawing.Point(95, 47);
+			this.chkShowProtection.Margin = new System.Windows.Forms.Padding(0);
+			this.chkShowProtection.Name = "chkShowProtection";
+			this.chkShowProtection.Size = new System.Drawing.Size(74, 17);
+			this.chkShowProtection.TabIndex = 7;
+			this.chkShowProtection.Text = "Protection";
+			this.chkShowProtection.UseVisualStyleBackColor = true;
+			this.chkShowProtection.CheckedChanged += new System.EventHandler(this.chkShowLayer_CheckedChanged);
+			// 
+			// ctrlChipDisplay
+			// 
+			this.ctrlChipDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.ctrlChipDisplay.Location = new System.Drawing.Point(0, 0);
+			this.ctrlChipDisplay.Name = "ctrlChipDisplay";
+			this.ctrlChipDisplay.Size = new System.Drawing.Size(480, 392);
+			this.ctrlChipDisplay.TabIndex = 0;
+			// 
+			// hexProgram
+			// 
+			this.hexProgram.BytesPerLine = 2;
+			this.hexProgram.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.hexProgram.Font = new System.Drawing.Font("Segoe UI", 9F);
+			this.hexProgram.Location = new System.Drawing.Point(3, 69);
+			this.hexProgram.Name = "hexProgram";
+			this.hexProgram.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
+			this.hexProgram.Size = new System.Drawing.Size(228, 187);
+			this.hexProgram.TabIndex = 5;
+			this.hexProgram.UseFixedBytesPerLine = true;
+			this.hexProgram.VScrollBarVisible = true;
+			// 
+			// lstLogView
+			// 
+			this.tableLayoutPanel1.SetColumnSpan(this.lstLogView, 4);
+			this.lstLogView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lstLogView.FullRowSelect = true;
+			this.lstLogView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.lstLogView.Location = new System.Drawing.Point(3, 438);
+			this.lstLogView.Name = "lstLogView";
+			this.lstLogView.Size = new System.Drawing.Size(651, 214);
+			this.lstLogView.TabIndex = 12;
+			this.lstLogView.UseCompatibleStateImageBehavior = false;
+			this.lstLogView.View = System.Windows.Forms.View.Details;
+			// 
+			// hexPaletteRam
+			// 
+			this.hexPaletteRam.Font = new System.Drawing.Font("Segoe UI", 9F);
+			this.hexPaletteRam.LineInfoVisible = true;
+			this.hexPaletteRam.Location = new System.Drawing.Point(83, 3);
+			this.hexPaletteRam.Name = "hexPaletteRam";
+			this.hexPaletteRam.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
+			this.hexPaletteRam.Size = new System.Drawing.Size(489, 38);
+			this.hexPaletteRam.TabIndex = 17;
+			this.hexPaletteRam.UseFixedBytesPerLine = true;
+			// 
+			// hexSpriteRam
+			// 
+			this.hexSpriteRam.Font = new System.Drawing.Font("Segoe UI", 9F);
+			this.hexSpriteRam.LineInfoVisible = true;
+			this.hexSpriteRam.Location = new System.Drawing.Point(83, 3);
+			this.hexSpriteRam.Name = "hexSpriteRam";
+			this.hexSpriteRam.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
+			this.hexSpriteRam.Size = new System.Drawing.Size(489, 73);
+			this.hexSpriteRam.TabIndex = 16;
+			this.hexSpriteRam.UseFixedBytesPerLine = true;
+			this.hexSpriteRam.VScrollBarVisible = true;
+			// 
+			// hexVram
+			// 
+			this.hexVram.ColumnInfoVisible = true;
+			this.hexVram.Font = new System.Drawing.Font("Segoe UI", 9F);
+			this.hexVram.LineInfoVisible = true;
+			this.hexVram.Location = new System.Drawing.Point(83, 3);
+			this.hexVram.Name = "hexVram";
+			this.hexVram.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
+			this.hexVram.Size = new System.Drawing.Size(489, 189);
+			this.hexVram.TabIndex = 4;
+			this.hexVram.UseFixedBytesPerLine = true;
+			this.hexVram.VScrollBarVisible = true;
 			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(947, 654);
-			this.Controls.Add(this.label12);
-			this.Controls.Add(this.tableLayoutPanel2);
+			this.ClientSize = new System.Drawing.Size(1147, 661);
+			this.Controls.Add(this.splitContainer1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.MinimumSize = new System.Drawing.Size(963, 692);
+			this.MinimumSize = new System.Drawing.Size(1163, 699);
 			this.Name = "frmMain";
-			this.Text = "(Not so) Visual 2C02";
+			this.Text = "Visual 2C02";
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();
 			this.flowLayoutPanel4.ResumeLayout(false);
@@ -1067,8 +1281,6 @@
 			this.tableLayoutPanel7.PerformLayout();
 			this.flowLayoutPanel13.ResumeLayout(false);
 			this.tableLayoutPanel2.ResumeLayout(false);
-			this.tableLayoutPanel2.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.grpReset.ResumeLayout(false);
 			this.tableLayoutPanel3.ResumeLayout(false);
 			this.tableLayoutPanel3.PerformLayout();
@@ -1076,8 +1288,21 @@
 			this.flowLayoutPanel10.ResumeLayout(false);
 			this.flowLayoutPanel10.PerformLayout();
 			this.groupBox1.ResumeLayout(false);
+			this.splitContainer1.Panel1.ResumeLayout(false);
+			this.splitContainer1.Panel2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+			this.splitContainer1.ResumeLayout(false);
+			this.splitContainer2.Panel1.ResumeLayout(false);
+			this.splitContainer2.Panel2.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+			this.splitContainer2.ResumeLayout(false);
+			this.tableLayoutPanel8.ResumeLayout(false);
+			this.tableLayoutPanel8.PerformLayout();
+			this.tableLayoutPanel9.ResumeLayout(false);
+			this.tableLayoutPanel9.PerformLayout();
+			this.flowLayoutPanel14.ResumeLayout(false);
+			this.flowLayoutPanel14.PerformLayout();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
@@ -1115,7 +1340,6 @@
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel9;
 		private System.Windows.Forms.Button btnStartLogging;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-		private System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.GroupBox grpReset;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
 		private System.Windows.Forms.RadioButton radResetPostrenderOdd;
@@ -1140,7 +1364,6 @@
 		private System.Windows.Forms.ComboBox cboRefreshSpeed;
 		private System.Windows.Forms.CheckBox chkLogHex;
 		private System.Windows.Forms.CheckBox chkLogCsv;
-		private System.Windows.Forms.Label label12;
 		private System.Windows.Forms.GroupBox groupBox1;
 		private Be.Windows.Forms.HexBox hexProgram;
 		private System.Windows.Forms.Label label13;
@@ -1158,6 +1381,21 @@
 		private System.Windows.Forms.Button btnResetVram;
 		private System.Windows.Forms.Button btnImportVram;
 		private System.Windows.Forms.Button btnExportVram;
+		private System.Windows.Forms.SplitContainer splitContainer1;
+		private System.Windows.Forms.SplitContainer splitContainer2;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
+		private System.Windows.Forms.CheckBox chkAnimate;
+		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel14;
+		private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.CheckBox chkShowDiffusion;
+		private System.Windows.Forms.CheckBox chkShowGroundedDiffusion;
+		private System.Windows.Forms.CheckBox chkShowPoweredDiffusion;
+		private System.Windows.Forms.CheckBox chkShowPolysilicon;
+		private System.Windows.Forms.CheckBox chkShowMetal;
+		private System.Windows.Forms.CheckBox chkShowProtection;
+		private ctrlChipDisplay ctrlChipDisplay;
+		private System.Windows.Forms.Label label14;
 	}
 }
 
