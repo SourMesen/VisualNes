@@ -628,7 +628,7 @@
 			// 
 			this.mnuAbout.Image = global::GUI.Properties.Resources.Icon;
 			this.mnuAbout.Name = "mnuAbout";
-			this.mnuAbout.Size = new System.Drawing.Size(152, 22);
+			this.mnuAbout.Size = new System.Drawing.Size(107, 22);
 			this.mnuAbout.Text = "About";
 			this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
 			// 
@@ -1279,7 +1279,6 @@
 			// 
 			// tableLayoutPanel11
 			// 
-			this.tableLayoutPanel11.AutoSize = true;
 			this.tableLayoutPanel11.ColumnCount = 3;
 			this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
 			this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -1299,7 +1298,6 @@
 			// flowLayoutPanel16
 			// 
 			this.flowLayoutPanel16.Anchor = System.Windows.Forms.AnchorStyles.Left;
-			this.flowLayoutPanel16.AutoSize = true;
 			this.flowLayoutPanel16.Controls.Add(this.btnResetCpuRam);
 			this.flowLayoutPanel16.Controls.Add(this.btnImportCpuRam);
 			this.flowLayoutPanel16.Controls.Add(this.btnExportCpuRam);
@@ -1372,7 +1370,6 @@
 			// 
 			// tableLayoutPanel12
 			// 
-			this.tableLayoutPanel12.AutoSize = true;
 			this.tableLayoutPanel12.ColumnCount = 3;
 			this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
 			this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -1392,7 +1389,6 @@
 			// flowLayoutPanel17
 			// 
 			this.flowLayoutPanel17.Anchor = System.Windows.Forms.AnchorStyles.Left;
-			this.flowLayoutPanel17.AutoSize = true;
 			this.flowLayoutPanel17.Controls.Add(this.btnResetPrgRam);
 			this.flowLayoutPanel17.Controls.Add(this.btnImportPrgRam);
 			this.flowLayoutPanel17.Controls.Add(this.btnExportPrgRam);
@@ -1498,7 +1494,6 @@
 			// 
 			// tableLayoutPanel9
 			// 
-			this.tableLayoutPanel9.AutoSize = true;
 			this.tableLayoutPanel9.ColumnCount = 3;
 			this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
 			this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -1518,7 +1513,6 @@
 			// flowLayoutPanel5
 			// 
 			this.flowLayoutPanel5.Anchor = System.Windows.Forms.AnchorStyles.Left;
-			this.flowLayoutPanel5.AutoSize = true;
 			this.flowLayoutPanel5.Controls.Add(this.btnResetNametableRam);
 			this.flowLayoutPanel5.Controls.Add(this.btnImportNametableRam);
 			this.flowLayoutPanel5.Controls.Add(this.btnExportNametableRam);
@@ -1592,7 +1586,6 @@
 			// 
 			// tableLayoutPanel5
 			// 
-			this.tableLayoutPanel5.AutoSize = true;
 			this.tableLayoutPanel5.ColumnCount = 3;
 			this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
 			this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -1612,7 +1605,6 @@
 			// flowLayoutPanel11
 			// 
 			this.flowLayoutPanel11.Anchor = System.Windows.Forms.AnchorStyles.Left;
-			this.flowLayoutPanel11.AutoSize = true;
 			this.flowLayoutPanel11.Controls.Add(this.btnResetPalette);
 			this.flowLayoutPanel11.Controls.Add(this.btnImportPalette);
 			this.flowLayoutPanel11.Controls.Add(this.btnExportPalette);
@@ -1684,7 +1676,6 @@
 			// 
 			// tableLayoutPanel6
 			// 
-			this.tableLayoutPanel6.AutoSize = true;
 			this.tableLayoutPanel6.ColumnCount = 3;
 			this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
 			this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -1704,7 +1695,6 @@
 			// flowLayoutPanel12
 			// 
 			this.flowLayoutPanel12.Anchor = System.Windows.Forms.AnchorStyles.Left;
-			this.flowLayoutPanel12.AutoSize = true;
 			this.flowLayoutPanel12.Controls.Add(this.btnResetSprite);
 			this.flowLayoutPanel12.Controls.Add(this.btnImportSprite);
 			this.flowLayoutPanel12.Controls.Add(this.btnExportSprite);
@@ -1777,7 +1767,6 @@
 			// 
 			// tableLayoutPanel7
 			// 
-			this.tableLayoutPanel7.AutoSize = true;
 			this.tableLayoutPanel7.ColumnCount = 3;
 			this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
 			this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -1797,7 +1786,6 @@
 			// flowLayoutPanel13
 			// 
 			this.flowLayoutPanel13.Anchor = System.Windows.Forms.AnchorStyles.Left;
-			this.flowLayoutPanel13.AutoSize = true;
 			this.flowLayoutPanel13.Controls.Add(this.btnResetChrRam);
 			this.flowLayoutPanel13.Controls.Add(this.btnImportChrRam);
 			this.flowLayoutPanel13.Controls.Add(this.btnExportChrRam);
@@ -1967,7 +1955,7 @@
 			this.flowLayoutPanel10.Location = new System.Drawing.Point(101, 0);
 			this.flowLayoutPanel10.Margin = new System.Windows.Forms.Padding(0);
 			this.flowLayoutPanel10.Name = "flowLayoutPanel10";
-			this.flowLayoutPanel10.Size = new System.Drawing.Size(257, 29);
+			this.flowLayoutPanel10.Size = new System.Drawing.Size(281, 29);
 			this.flowLayoutPanel10.TabIndex = 16;
 			// 
 			// chkShowInHex

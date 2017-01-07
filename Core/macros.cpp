@@ -307,7 +307,7 @@ void handleCpuBusRead() {
 		int a = readCpuAddressBus();
 		/*int d = eval(readTriggers[a]);
 		if(d == undefined)*/
-		int d = mCpuRead(readCpuAddressBus());
+		int d = mCpuRead(a);
 
 		/*if(isNodeHigh(nodenames['sync'])) {
 			eval(fetchTriggers[d]);
