@@ -197,7 +197,7 @@
 			this.Padding = new System.Windows.Forms.Padding(5);
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "About - Mesen";
+			this.Text = "About - Visual NES";
 			this.tableLayoutPanel.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
 			this.flowLayoutPanel1.ResumeLayout(false);
