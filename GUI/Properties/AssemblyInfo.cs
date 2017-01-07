@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Visual2C02")]
+[assembly: AssemblyTitle("Visual Nes")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Visual2C02")]
+[assembly: AssemblyProduct("Visual Nes")]
 [assembly: AssemblyCopyright("Copyright © 2017 M Bibaud")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

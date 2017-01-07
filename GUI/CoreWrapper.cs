@@ -9,7 +9,7 @@ namespace GUI
 {
 	public static class CoreWrapper
 	{
-		const string dllName = "Core2C02.dll";
+		const string dllName = "CoreVisualNes.dll";
 
 		[DllImport(dllName)] public extern static void initEmulator();
 		[DllImport(dllName)] public extern static void release();
