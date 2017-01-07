@@ -3121,6 +3121,7 @@ namespace Be.Windows.Forms
 			get { return _byteProvider; }
 			set
 			{
+				bool sameLength = value != null && _byteProvider != null && _byteProvider.Length == value.Length;
 				if (_byteProvider == value)
 					return;
 
@@ -3148,8 +3149,10 @@ namespace Be.Windows.Forms
 				}
 				else
 				{
-					SetPosition(0, 0);
-					SetSelectionLength(0);
+					if(!sameLength) {
+						SetPosition(0, 0);
+						SetSelectionLength(0);
+					}
 
 					if (_caretVisible && Focused)
 						UpdateCaret();
@@ -3160,7 +3163,9 @@ namespace Be.Windows.Forms
 				CheckCurrentLineChanged();
 				CheckCurrentPositionInLineChanged();
 
-				_scrollVpos = 0;
+				if(!sameLength) {
+					_scrollVpos = 0;
+				}
 
 				UpdateVisibilityBytes();
 				UpdateRectanglePositioning();
