@@ -13,7 +13,7 @@ namespace GUI
 {
 	public partial class ctrlChipDisplay : UserControl
 	{
-		const int _chipSizeX = 12000;
+		const int _chipSizeX = 13000;
 		const int _chipSizeY = 21500;
 		const double _xyRatio = (double)_chipSizeY/_chipSizeX;
 		const int _canvasSizeX = 3000;
