@@ -618,8 +618,13 @@ namespace GUI
 			using(OpenFileDialog ofd = new OpenFileDialog()) {
 				ofd.Filter = "*.nes|*.nes";
 				if(ofd.ShowDialog() == DialogResult.OK) {
-
 					byte[] rom = File.ReadAllBytes(ofd.FileName);
+
+					if((rom[6] & 0x08) == 0x08) {
+						CoreWrapper.setMirroringType(MirroringType.FourScreens);
+					} else {
+						CoreWrapper.setMirroringType((rom[6] & 0x01) == 0x01 ? MirroringType.Vertical : MirroringType.Horizontal);
+					}
 
 					int prgRamSize = rom[4]*0x4000;
 					int chrRamSize = rom[5]*0x2000;
