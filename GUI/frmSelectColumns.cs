@@ -16,27 +16,30 @@ namespace GUI
 	{
 		private static List<SelectTreeNode> _nodeNames;
 		private static HashSet<string> _selectedColumns;
-		
-		static frmSelectColumns()
-		{
-			HashSet<string> existingColumns = new HashSet<string>();
-			_nodeNames = new List<SelectTreeNode>();
-			string[] lines = File.ReadAllLines("nodenames.txt");
-			foreach(string line in lines) {
-				string nodename = line.Split(',')[0];
-				_nodeNames.Add(new SelectTreeNode(nodename));
-				existingColumns.Add(nodename);
-				string withoutNumber = Regex.Replace(nodename, "[_0-9]+$", "");
-				if(withoutNumber != nodename && !existingColumns.Contains(withoutNumber)) {
-					_nodeNames.Add(new SelectTreeNode(withoutNumber));
-					existingColumns.Add(withoutNumber);
-				}
-			}
-			_nodeNames.Add(new SelectTreeNode("cycle"));
-		}
+		private static ChipDefinitions _chipDef;
 
-		public frmSelectColumns(List<string> originalColumns)
+		public frmSelectColumns(ChipDefinitions chipDef, List<string> originalColumns)
 		{
+			if(_chipDef == null) {
+				_chipDef = chipDef;
+				HashSet<string> existingColumns = new HashSet<string>();
+				_nodeNames = new List<SelectTreeNode>();
+
+				ChipDefinitions chipDefinitions = new ChipDefinitions();
+
+				foreach(KeyValuePair<string, int> kvp in chipDefinitions.NodeNumberByName) {
+					string nodename = kvp.Key;
+					_nodeNames.Add(new SelectTreeNode(nodename));
+					existingColumns.Add(nodename);
+					string withoutNumber = Regex.Replace(nodename, "[_0-9]+$", "");
+					if(withoutNumber != nodename && !existingColumns.Contains(withoutNumber)) {
+						_nodeNames.Add(new SelectTreeNode(withoutNumber));
+						existingColumns.Add(withoutNumber);
+					}
+				}
+				_nodeNames.Add(new SelectTreeNode("cycle"));
+			}
+
 			InitializeComponent();
 			_selectedColumns = new HashSet<string>(originalColumns);
 			RefreshList();
@@ -54,7 +57,7 @@ namespace GUI
 		{
 			List<SelectTreeNode> nodes = new List<SelectTreeNode>();
 			foreach(SelectTreeNode node in _nodeNames) {
-				if(string.IsNullOrWhiteSpace(txtSearchString.Text) || Regex.Match(node.Name, txtSearchString.Text).Success) {
+				if(string.IsNullOrWhiteSpace(txtSearchString.Text) || Regex.Match(node.Name, txtSearchString.Text, RegexOptions.IgnoreCase).Success) {
 					nodes.Add(node);
 				}
 			}

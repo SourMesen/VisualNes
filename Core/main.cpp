@@ -9,18 +9,22 @@
 #include "ramedit.h"
 #include "logger.h"
 
-vector<string> logVars = { "cycle" ,"hpos", "vpos", "vbl_flag", "spr0_hit", "spr_overflow", "vramaddr_t", "vramaddr_v", "io_db", "io_ab", "io_rw", "io_ce", "rd", "wr", "ab", "ale", "db" };
+vector<string> logVars;
 std::deque<int32_t> recentLog;
 string chipState;
+
 const int spriteRamSize = 0x120;
 const int paletteRamSize = 0x20;
 
 enum class MemoryType
 {
-	Vram = 0,
-	PaletteRam = 1,
-	SpriteRam = 2,
-	FullState = 3,
+	CpuRam = 0, //$0000-$07FF (mirrored to $1FFF)
+	PrgRam = 1, //$8000-$FFFF
+	ChrRam = 2, //$0000-$1FFF
+	NametableRam = 3, //$2000-$2FFF ($2000-$23FF is nametable A, $2400-$27FF is nametable B)
+	PaletteRam = 4, //internal to the PPU - 32 bytes (including some mirrors)
+	SpriteRam = 5,  //interal to the PPU.  256 bytes for primary + 32 bytes for secondary
+	FullState = 6, //all of the above put together + a state of all of the nodes in the simulation (used for save/load state)
 };
 
 struct EmulationState
@@ -37,6 +41,18 @@ struct EmulationState
 	int32_t ab;
 	int32_t d;
 
+	int32_t a;
+	int32_t x;
+	int32_t y;
+	int32_t ps;
+	int32_t sp;
+	int32_t pc;
+	int32_t opCode;
+	int32_t fetch;
+
+	int32_t cpu_ab;
+	int32_t cpu_db;
+
 	int32_t recentLog[10000];
 };
 
@@ -51,10 +67,10 @@ DllExport void release()
 	stopLogging();
 }
 
-DllExport void reset(char* state)
+DllExport void reset(char* state, bool softReset)
 {
 	recentLog.clear();
-	initChip(state);		
+	initChip(state, softReset);		
 }
 
 DllExport const char* getSaveState()
@@ -66,9 +82,21 @@ DllExport const char* getSaveState()
 DllExport int32_t getMemoryState(MemoryType memoryType, uint8_t *buffer)
 {
 	switch(memoryType) {
-		case MemoryType::Vram: 
-			memcpy(buffer, memory, sizeof(memory)); 
-			return sizeof(memory);
+		case MemoryType::CpuRam:
+			memcpy(buffer, cpuRam, sizeof(cpuRam));
+			return sizeof(cpuRam);
+
+		case MemoryType::PrgRam:
+			memcpy(buffer, prgRam, sizeof(prgRam));
+			return sizeof(prgRam);
+
+		case MemoryType::ChrRam: 
+			memcpy(buffer, chrRam, sizeof(chrRam));
+			return sizeof(chrRam);
+
+		case MemoryType::NametableRam:
+			memcpy(buffer, nametableRam, sizeof(nametableRam));
+			return sizeof(nametableRam);
 
 		case MemoryType::PaletteRam:
 			for(int i = 0; i < paletteRamSize; i++) {
@@ -85,11 +113,14 @@ DllExport int32_t getMemoryState(MemoryType memoryType, uint8_t *buffer)
 		case MemoryType::FullState:
 			string state = getSaveState();
 			memcpy(buffer, state.c_str(), state.size());
-			buffer += state.size();
-			buffer += getMemoryState(MemoryType::Vram, buffer);
-			buffer += getMemoryState(MemoryType::PaletteRam, buffer);
-			buffer += getMemoryState(MemoryType::SpriteRam, buffer);
-			return (int32_t)(state.size() + sizeof(memory) + paletteRamSize + spriteRamSize);
+			size_t pos = state.size();
+			pos += getMemoryState(MemoryType::CpuRam, buffer + pos);
+			pos += getMemoryState(MemoryType::PrgRam, buffer + pos);
+			pos += getMemoryState(MemoryType::ChrRam, buffer + pos);
+			pos += getMemoryState(MemoryType::NametableRam, buffer + pos);
+			pos += getMemoryState(MemoryType::PaletteRam, buffer + pos);
+			pos += getMemoryState(MemoryType::SpriteRam, buffer + pos);
+			return (int32_t)pos;
 	}
 
 	return 0;
@@ -98,7 +129,21 @@ DllExport int32_t getMemoryState(MemoryType memoryType, uint8_t *buffer)
 DllExport void setMemoryState(MemoryType memoryType, uint8_t *buffer, int32_t length)
 {
 	switch(memoryType) {
-		case MemoryType::Vram: memcpy(memory, buffer, std::min(length, (int32_t)sizeof(memory))); break;
+		case MemoryType::CpuRam: 
+			memcpy(cpuRam, buffer, std::min(length, (int32_t)sizeof(cpuRam))); 
+			break;
+
+		case MemoryType::PrgRam:
+			memcpy(prgRam, buffer, std::min(length, (int32_t)sizeof(prgRam)));
+			break;
+
+		case MemoryType::ChrRam:
+			memcpy(chrRam, buffer, std::min(length, (int32_t)sizeof(chrRam)));
+			break;
+
+		case MemoryType::NametableRam:
+			memcpy(nametableRam, buffer, std::min(length, (int32_t)sizeof(nametableRam)));
+			break;
 
 		case MemoryType::PaletteRam:
 			for(int i = 0; i < paletteRamSize && i < length; i++) {
@@ -114,32 +159,21 @@ DllExport void setMemoryState(MemoryType memoryType, uint8_t *buffer, int32_t le
 
 		case MemoryType::FullState:
 			size_t stateSize = getStateString().size();
-			if(length >= (int32_t)(stateSize + sizeof(memory) + paletteRamSize + spriteRamSize)) {
+			if(length >= (int32_t)(stateSize + sizeof(cpuRam) + sizeof(prgRam) + sizeof(chrRam) + sizeof(nametableRam) + paletteRamSize + spriteRamSize)) {
 				char* state = new char[stateSize + 1];
 				memcpy(state, buffer, stateSize);
 				state[stateSize] = 0;
-				initChip(state);
+				initChip(state, false);
 				buffer += stateSize;
-				setMemoryState(MemoryType::Vram, buffer, sizeof(memory));
-				buffer += sizeof(memory);
-				setMemoryState(MemoryType::PaletteRam, buffer, paletteRamSize);
-				buffer += 0x20;
-				setMemoryState(MemoryType::SpriteRam, buffer, spriteRamSize);
+				setMemoryState(MemoryType::CpuRam, buffer, sizeof(cpuRam)); buffer += sizeof(cpuRam);
+				setMemoryState(MemoryType::PrgRam, buffer, sizeof(prgRam)); buffer += sizeof(prgRam);
+				setMemoryState(MemoryType::ChrRam, buffer, sizeof(chrRam)); buffer += sizeof(chrRam);
+				setMemoryState(MemoryType::NametableRam, buffer, sizeof(nametableRam)); buffer += sizeof(nametableRam);
+				setMemoryState(MemoryType::PaletteRam, buffer, paletteRamSize); buffer += paletteRamSize;
+				setMemoryState(MemoryType::SpriteRam, buffer, spriteRamSize); buffer += spriteRamSize;
 			}
 			break;
 	}
-}
-
-DllExport void setProgram(uint8_t *buffer, uint32_t length)
-{
-	vector<uint16_t> program;
-	program.clear();
-	for(uint32_t i = 0; i < length; i += 2) {
-		program.push_back((buffer[i] << 8) | buffer[i + 1]);
-	}
-	program.push_back(0x00FF);
-	
-	resetProgram(program);
 }
 
 DllExport void setTrace(char* nodeName)
@@ -163,7 +197,19 @@ DllExport void getState(EmulationState *state)
 	state->spr0_hit = readBit("spr0_hit");
 	state->clk = readBit("clk0");
 	state->ab = readBits("ab");
-	state->d = readDataBus();
+	state->d = readPpuDataBus();
+
+	state->a = readBits("cpu_a");
+	state->x = readBits("cpu_x");
+	state->y = readBits("cpu_y");
+	state->ps = readBits("cpu_p");
+	state->sp = readBits("cpu_s");
+	state->pc = (readBits("cpu_pch") << 8) | readBits("cpu_pcl");
+	state->cpu_ab = readCpuAddressBus();
+	state->cpu_db = readCpuDataBus();
+
+	state->opCode = readBits("cpu_ir");
+	state->fetch = isNodeHigh(nodenames["cpu_sync"]) ? readCpuDataBus() : -1;
 
 	int i;
 	int k = 0;

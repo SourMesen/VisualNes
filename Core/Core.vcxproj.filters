@@ -88,5 +88,14 @@
     <Text Include="spritenodes.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="cpunodenames.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="cpusegdefs.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="cputransdefs.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

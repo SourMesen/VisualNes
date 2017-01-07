@@ -82,8 +82,17 @@
     <Compile Include="ctrlChipDisplay.Designer.cs">
       <DependentUpon>ctrlChipDisplay.cs</DependentUpon>
     </Compile>
+    <Compile Include="ctrlSplitContainer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DoubleBufferedListView.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="frmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAbout.designer.cs">
+      <DependentUpon>frmAbout.cs</DependentUpon>
     </Compile>
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
@@ -125,6 +134,9 @@
     <EmbeddedResource Include="ctrlChipDisplay.resx">
       <DependentUpon>ctrlChipDisplay.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmAbout.resx">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -165,6 +177,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <None Include="Resources\Icon.png" />
+    <None Include="Resources\folder-open.png" />
+    <None Include="Resources\system-log-out.png" />
+    <None Include="Resources\media-playback-pause.png" />
+    <None Include="Resources\media-playback-stop.png" />
+    <None Include="Resources\media-playback-start.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

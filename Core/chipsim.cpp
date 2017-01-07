@@ -28,12 +28,11 @@ THE SOFTWARE.
 
 extern vector<node> nodes;
 extern unordered_map<string, shared_ptr<transistor>> transistors;
-//extern unordered_map<int, string> nodenameByNumber;
 extern unordered_map<string, int> nodenames;
 extern int ngnd;
 extern int npwr;
 
-vector<int> processesNodes;
+vector<int> processedNodes;
 shared_ptr<vector<int>> recalclists[2];
 shared_ptr<vector<int>> recalclist;
 vector<int> group;
@@ -43,12 +42,12 @@ bool hasGnd = false;
 bool hasPwr = false;
 
 void recalcNodeList(shared_ptr<vector<int>> list) {
-	if(processesNodes.empty()) {
-		processesNodes.insert(processesNodes.end(), nodes.size(), 0);
+	if(processedNodes.empty()) {
+		processedNodes.insert(processedNodes.end(), nodes.size(), 0);
 		recalclists[0].reset(new vector<int>(100));
 		recalclists[1].reset(new vector<int>(100));
 	} else {
-		memset(processesNodes.data(), 0, processesNodes.size() * sizeof(int));
+		memset(processedNodes.data(), 0, processedNodes.size() * sizeof(int));
 		recalclists[0]->clear();
 		recalclists[1]->clear();
 	}
@@ -66,7 +65,7 @@ void recalcNodeList(shared_ptr<vector<int>> list) {
 		if(groupEmpty) return;
 
 		for(int nodeNumber : *recalclist) {
-			processesNodes[nodeNumber] = 0;
+			processedNodes[nodeNumber] = 0;
 		}
 
 		list = recalclist;
@@ -112,9 +111,9 @@ void addRecalcNode(int nn) {
 	if(nn == ngnd) return;
 	if(nn == npwr) return;
 
-	if(!processesNodes[nn]) {
+	if(!processedNodes[nn]) {
 		recalclist->push_back(nn);
-		processesNodes[nn] = 1;
+		processedNodes[nn] = 1;
 	}
 
 	groupEmpty = false;

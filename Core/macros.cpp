@@ -8,30 +8,28 @@
 string nodenamereset = "res";
 extern std::unordered_map<std::string, int> nodenames;
 
-uint8_t memory[0x3000];
+uint8_t chrRam[0x2000];
+uint8_t nametableRam[4][0x400];
+uint8_t cpuRam[0x800];
+uint8_t prgRam[0x8000];
+
+//TODO: Add all of these to save states
+MirroringType mirroringType;
 std::unordered_map<string, bool> chrStatus;
 int lastAddress = 0;
 int lastData = 0;
+int lastCpuDbValue = 0;
 int chrAddress = 0;
 int cycle = 0;
-int ioParms = 0;
-int ioCounter = 0;
-int testprogramAddress = 0;
-vector<uint16_t> testprogram = {
-	0x2000, // $00 -> $2000
-	0x2100, // $00 -> $2001
-	0x2300, // $00 -> $2003, sprite DMA follows
-	0x3200, // read $2002
-	0x2500, // $00 -> $2005
-	0x2500, // $00 -> $2005
-	0x2090, // $90 -> $2000
-	0x211E,	// $1E -> $2001
-	0x00FF, // terminator
-};
 
-void initChip(string state)
+void initChip(string state, bool softReset)
 {
-	memset(memory, 0, sizeof(memory));
+	if(!softReset) {
+		memset(cpuRam, 0, sizeof(cpuRam));
+		memset(prgRam, 0, sizeof(prgRam));
+		memset(chrRam, 0, sizeof(chrRam));
+		memset(nametableRam, 0, sizeof(nametableRam));
+	}
 
 	if(state.empty()) {
 		for(node &n : nodes) {
@@ -53,8 +51,19 @@ void initChip(string state)
 		setHigh("io_ce");
 		setHigh("int");
 
+		//CPU reset
+		for(int i = 0; i<6; i++) { 
+			setHigh("clk0");
+			setLow("clk0");
+		}
+
+		setLow("cpu_so");
+		setHigh("cpu_irq");
+		setHigh("cpu_nmi");
+		//CPU reset
+
 		recalcNodeList(allNodes());
-		for(int i = 0; i < 4; i++) {
+		for(int i = 0; i < 12*8; i++) {
 			setHigh("clk0");
 			setLow("clk0");
 		}
@@ -65,9 +74,6 @@ void initChip(string state)
 	}
 
 	cycle = 0;
-	testprogramAddress = 0;
-	ioCounter = 0;
-	handleIoBus(); // to get it properly synchronized
 	chrAddress = 0;
 	chrStatus["rd"] = 1;
 	chrStatus["wr"] = 1;
@@ -77,14 +83,29 @@ void initChip(string state)
 void halfStep()
 {
 	bool clk = isNodeHigh(nodenames["clk0"]);
-	//eval(clockTriggers[cycle]);
-	handleIoBus();
+
 	if(clk) {
 		setLow("clk0");
 	} else {
 		setHigh("clk0");
 	}
+	
+	//Simulate the 74139's logic
+	if(isNodeHigh(nodenames["cpu_ab13"]) && !isNodeHigh(nodenames["cpu_ab14"]) && !isNodeHigh(nodenames["cpu_ab15"]) && isNodeHigh(nodenames["cpu_clk0"])) {
+		setLow("io_ce");
+	} else {
+		setHigh("io_ce");
+	}
+
 	handleChrBus();
+
+	if(clk != isNodeHigh(nodenames["cpu_clk0"])) {
+		if(clk) { 
+			handleCpuBusRead(); 
+		} else { 
+			handleCpuBusWrite();
+		}
+	}
 }
 
 void step()
@@ -100,7 +121,6 @@ int readBit(string name) {
 unordered_map<string, vector<int>> nodeNumberCache;
 unordered_map<string, int> bitCountCache;
 vector<string> numbers = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" };
-
 int readBits(string name, int n) {
 	if(name.compare("cycle") == 0) {
 		return cycle >> 1;
@@ -182,34 +202,127 @@ void floatBits(string name, int n) {
 	recalcNodeList(recalcs);
 }
 
-int readAddressBus() {
+int readPpuAddressBus() {
 	if(isNodeHigh(nodenames["ale"])) {
 		lastAddress = readBits("ab", 14);
 	}
 	return lastAddress;
 }
 
-int readDataBus() {
+int readPpuDataBus() {
 	if(!isNodeHigh(nodenames["rd"]) || !isNodeHigh(nodenames["wr"])) {
 		lastData = readBits("db", 8);
 	}
 	return lastData;
 }
 
-uint8_t mRead(int a) {
-	a &= 0x3FFF;
-	if(a >= 0x3000) {
-		a -= 0x1000;
+int getNametable(int a)
+{
+	int nametable = 0;
+	switch(mirroringType) {
+		case MirroringType::Vertical: nametable = (a & 0x400) ? 1 : 0; break;
+		case MirroringType::Horizontal: nametable = (a & 0x800) ? 1 : 0; break;
+		case MirroringType::FourScreens:	nametable = (a & 0xC00) >> 16; break;
+		case MirroringType::ScreenAOnly: nametable = 0; break;
+		case MirroringType::ScreenBOnly: nametable = 1; break;
 	}
-	return memory[a];
+	return nametable;
 }
 
-void mWrite(int a, int d) {
+uint8_t mPpuRead(int a) {
 	a &= 0x3FFF;
 	if(a >= 0x3000) {
 		a -= 0x1000;
 	}
-	memory[a] = d;
+	if(a < 0x2000) {
+		return chrRam[a];
+	} else {
+		return nametableRam[getNametable(a)][a & 0x3FF];
+	}
+}
+
+void mPpuWrite(int a, int d) {
+	a &= 0x3FFF;
+	if(a >= 0x3000) {
+		a -= 0x1000;
+	}
+
+	if(a < 0x2000) {
+		chrRam[a] = d;
+	} else {
+		nametableRam[getNametable(a)][a & 0x3FF] = d;
+	}
+}
+
+int mCpuRead(int a) {
+	if(a < 0x2000) {
+		return cpuRam[a & 0x7FF];
+	} else if(a >= 0x8000) {
+		return prgRam[a - 0x8000];
+	} else {
+		//TODO: proper open bus implementation
+		return lastCpuDbValue;
+	}
+}
+
+void mCpuWrite(int a, int d) { 
+	if(a < 0x2000) {
+		cpuRam[a & 0x7FF] = d;
+	} else if(a >= 0x8000) {
+		prgRam[a - 0x8000] = d;
+	} else {
+		//External device (i.e PPU)
+	}
+}
+
+int readCpuAddressBus() { 
+	return readBits("cpu_ab", 16); 
+}
+
+int readCpuDataBus() { 
+	lastCpuDbValue = readBits("cpu_db", 8); 
+	return lastCpuDbValue;
+}
+
+void writeCpuDataBus(int x) {
+	shared_ptr<vector<int>> recalcs(new vector<int>());
+	for(int i = 0; i<8; i++) {
+		int nn = nodenames["cpu_db" + std::to_string(i)];
+		node &n = nodes[nn];
+		if((x % 2) == 0) { 
+			n.pulldown = true; 
+			n.pullup = false; 
+		} else { 
+			n.pulldown = false; 
+			n.pullup = true; 
+		}
+		recalcs->push_back(nn);
+		x >>= 1;
+	}
+	recalcNodeList(recalcs);
+}
+
+void handleCpuBusRead() {
+	if(isNodeHigh(nodenames["cpu_rw"])) {
+		int a = readCpuAddressBus();
+		/*int d = eval(readTriggers[a]);
+		if(d == undefined)*/
+		int d = mCpuRead(readCpuAddressBus());
+
+		/*if(isNodeHigh(nodenames['sync'])) {
+			eval(fetchTriggers[d]);
+		}*/
+		writeCpuDataBus(d);
+	}
+}
+
+void handleCpuBusWrite() {
+	if(!isNodeHigh(nodenames["cpu_rw"])) {
+		int a = readCpuAddressBus();
+		int d = readCpuDataBus();
+		//eval(writeTriggers[a]);
+		mCpuWrite(a, d);
+	}
 }
 
 void handleChrBus() {
@@ -220,14 +333,14 @@ void handleChrBus() {
 	newStatus["wr"] = isNodeHigh(nodenames["wr"]);
 	// rising edge of ALE
 	if(!chrStatus["ale"] && newStatus["ale"]) {
-		chrAddress = readAddressBus();
+		chrAddress = readPpuAddressBus();
 	}
 	// falling edge of /RD - put bits on bus
 	if(chrStatus["rd"] && !newStatus["rd"]) {
 		int a = chrAddress;
 		/*var d = eval(readTriggers[a]);*/
 		//if(d == undefined) {
-		uint8_t d = mRead(a);
+		uint8_t d = mPpuRead(a);
 		writeBits("db", 8, d);
 	}
 	// rising edge of /RD - float the data bus
@@ -237,57 +350,14 @@ void handleChrBus() {
 	// rising edge of /WR - store data in RAM
 	if(!chrStatus["wr"] && newStatus["wr"]) {
 		int a = chrAddress;
-		int d = readDataBus();
+		int d = readPpuDataBus();
 		//eval(writeTriggers[a]);
-		mWrite(a, d);
+		mPpuWrite(a, d);
 	}
 	chrStatus = newStatus;
 }
 
-void handleIoBus() {
-	if((ioCounter == 0) && (testprogramAddress < (int)testprogram.size())) {
-		//cmd_highlightCurrent();
-		ioParms = testprogram[testprogramAddress];
-		if(ioParms & 0x3000)
-			ioCounter = 24;
-		else {
-			ioCounter = ioParms & 0x7FF;
-			floatBits("io_db", 8);
-		}
-	}
-	if(ioCounter > 0) {
-		int ce = (ioParms & 0x2000) >> 13;
-		int rw = (ioParms & 0x1000) >> 12;
-		int a = (ioParms & 0x700) >> 8;
-		int d = (ioParms & 0xFF);
-		if((ioCounter == 24) && ce) {
-			writeBits("io_ab", 3, a);
-			if(rw) { 
-				floatBits("io_db", 8); 
-			} else {
-				writeBits("io_db", 8, d);
-			}
-			writeBit("io_rw", rw);
-		}
-		if((ioCounter == 16) && ce) {
-			setLow("io_ce");
-		}
-		if(ioCounter == 1) {
-			if(rw) {
-				d = readBits("io_db", 8);
-				// store result in the test program
-				//cmd_setCellValue(testprogramAddress * 8 + 5, d);
-			}
-			setHigh("io_ce");
-		}
-		ioCounter--;
-		if(ioCounter == 0)
-			testprogramAddress++;
-	}
-}
-
-void resetProgram(vector<uint16_t> newProgram)
+void setMirroringType(MirroringType mirroring)
 {
-	testprogram = newProgram;
-	testprogramAddress = 0;
+	mirroringType = mirroring;
 }

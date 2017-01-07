@@ -171,6 +171,9 @@
     <ClCompile Include="wires.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="cpunodenames.txt" />
+    <Text Include="cpusegdefs.txt" />
+    <Text Include="cputransdefs.txt" />
     <Text Include="nodenames.txt">
       <DeploymentContent>false</DeploymentContent>
     </Text>

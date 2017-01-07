@@ -17,6 +17,8 @@ namespace GUI
 		[DllImport(dllName)] [return: MarshalAs(UnmanagedType.I1)] public extern static bool startLogging([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]string filename, [MarshalAs(UnmanagedType.I1)]bool logAsHex, [MarshalAs(UnmanagedType.I1)]bool logAsCsv);
 		[DllImport(dllName)] public extern static void stopLogging();
 
+		[DllImport(dllName)] public extern static void setMirroringType(MirroringType mirroring);
+
 		[DllImport(dllName)] [return: MarshalAs(UnmanagedType.I1)] public extern static bool isNodeHigh(int nodeNumber);
 		[DllImport(dllName)] [return: MarshalAs(UnmanagedType.I1)] public extern static bool isTransistorOn([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]string transistorName);
 
@@ -25,7 +27,7 @@ namespace GUI
 		[DllImport(dllName)] public extern static void setTrace([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]string tracedColumns);
 
 		[DllImport(dllName)] public extern static void step(UInt32 halfCycleCount);
-		[DllImport(dllName)] public extern static void reset([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]string resetState);
+		[DllImport(dllName)] public extern static void reset([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(UTF8Marshaler))]string resetState, [MarshalAs(UnmanagedType.I1)]bool softReset);
 
 		[DllImport(dllName, EntryPoint = "getMemoryState")] private static extern int getMemoryStateWrapper(MemoryType type, IntPtr buffer);
 		public static byte[] getMemoryState(MemoryType type)
@@ -51,17 +53,15 @@ namespace GUI
 				handle.Free();
 			}
 		}
+	}
 
-		[DllImport(dllName, EntryPoint = "setProgram")] private static extern void setProgramWrapper(IntPtr buffer, UInt32 length);
-		public static void setProgram(byte[] data)
-		{
-			GCHandle handle = GCHandle.Alloc(data, GCHandleType.Pinned);
-			try {
-				setProgramWrapper(handle.AddrOfPinnedObject(), (UInt32)data.Length);
-			} finally {
-				handle.Free();
-			}
-		}
+	public enum MirroringType
+	{
+		Horizontal,
+		Vertical,
+		ScreenAOnly,
+		ScreenBOnly,
+		FourScreens
 	}
 
 	public struct EmulationState
@@ -78,16 +78,31 @@ namespace GUI
 		public int ab;
 		public int d;
 
+		public int a;
+		public int x;
+		public int y;
+		public int ps;
+		public int sp;
+		public int pc;
+		public int opCode;
+		public int fetch;
+
+		public int cpu_ab;
+		public int cpu_db;
+
 		[MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 10000, ArraySubType = UnmanagedType.I4)]
 		public int[] recentLog;
 	};
 
 	public enum MemoryType
 	{
-		Vram = 0,
-		PaletteRam = 1,
-		SpriteRam = 2,
-		FullState = 3,
+		CpuRam = 0, //$0000-$07FF (mirrored to $1FFF)
+		PrgRam = 1, //$8000-$FFFF
+		ChrRam = 2, //$0000-$1FFF
+		NametableRam = 3, //$2000-$2FFF ($2000-$23FF is nametable A, $2400-$27FF is nametable B)
+		PaletteRam = 4, //internal to the PPU - 32 bytes (including some mirrors)
+		SpriteRam = 5,  //interal to the PPU.  256 bytes for primary + 32 bytes for secondary
+		FullState = 6, //all of the above put together + a state of all of the nodes in the simulation (used for save/load state)
 	}
 
 }

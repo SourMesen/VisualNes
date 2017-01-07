@@ -56,6 +56,37 @@ namespace GUI
 		internal List<List<int>> SegmentDefs { get { return _segmentDefs; } }
 		internal List<node> Nodes { get { return _nodes; } }
 		internal List<transistor> Transistors { get { return _transistors; } }
+		internal Dictionary<string, int> NodeNumberByName { get { return _nodeNumberByName; } }
+
+		const int cpuOffset = 13000;
+		const int cpuXOffset = 0;
+		const int cpuYOffset = 0;
+		const int ppuXOffset = 1500;
+		const int ppuYOffset = 12500;
+
+		Dictionary<int, int> idConvertTable = new Dictionary<int, int>() {
+			{ 10000 + cpuOffset, 1 }, //vcc
+			{ 10001 + cpuOffset, 2 }, //vss
+			{ 10004 + cpuOffset, 1934 }, //reset
+
+			{ 11669 + cpuOffset, 772 }, //cpu_clk_in -> clk0
+
+			{ 1013, 11819 + cpuOffset }, //io_db0 -> cpu_db0
+			{ 765, 11966 + cpuOffset }, //db1
+			{ 431, 12056 + cpuOffset }, //db2
+			{ 87, 12091 + cpuOffset }, //db3
+			{ 11, 12090 + cpuOffset }, //db4
+			{ 10, 12089 + cpuOffset }, //db5
+			{ 9, 12088 + cpuOffset }, //db6
+			{ 8, 12087 + cpuOffset }, //db7
+
+			{ 12, 10020 + cpuOffset }, //io_ab0 -> cpu_ab0
+			{ 6, 10019 + cpuOffset }, //io_ab1 -> cpu_ab1
+			{ 7, 10030 + cpuOffset }, //io_ab2 -> cpu_ab2
+
+			{ 10331 + cpuOffset, 1031 }, //nmi -> int
+			{ 10092 + cpuOffset, 1224 }, //cpu_rw -> io_rw
+		};
 
 		public ChipDefinitions()
 		{
@@ -108,44 +139,74 @@ namespace GUI
 			}
 		}
 
+		int convertId(int id)
+		{
+			if(idConvertTable.ContainsKey(id)) {
+				return idConvertTable[id];
+			}
+			return id;
+		}
+
 		void loadSegmentDefinitions()
 		{
-			foreach(string line in File.ReadAllLines("segdefs.txt")) {
-				List<int> segmentDef = new List<int>();
-				foreach(string value in line.Split(',')) {
-					segmentDef.Add(int.Parse(value));
+			Action<string, int, int, int> loadDefs = (filename, idOffset, xOffset, yOffset) => {
+				foreach(string line in File.ReadAllLines(filename)) {
+					List<int> segmentDef = new List<int>();
+					string[] values = line.Split(',');
+					for(int i = 0; i < values.Length; i++) {
+						if(i == 0) {
+							segmentDef.Add(convertId(int.Parse(values[i]) + idOffset));
+						} else if(i > 2) {
+							segmentDef.Add(int.Parse(values[i]) + (i % 2 == 0 ? yOffset : xOffset));
+						} else {
+							segmentDef.Add(int.Parse(values[i]));
+						}
+					}
+					_segmentDefs.Add(segmentDef);
 				}
-				_segmentDefs.Add(segmentDef);
-			}
+			};
+
+			loadDefs("segdefs.txt", 0, ppuXOffset, ppuYOffset);
+			loadDefs("cpusegdefs.txt", cpuOffset, cpuXOffset, cpuYOffset);
 		}
 
 		void loadTransistorDefinitions()
 		{
-			foreach(string line in File.ReadAllLines("transdefs.txt")) {
-				string[] values = line.Split(',');
-				string[] bbValues = values[4].Split('|');
-				List<int> bb = new List<int>();
-				foreach(string value in bbValues) {
-					bb.Add(int.Parse(value));
-				}
+			Action<string, string, int, int, int> loadDefs = (filename, namePrefix, idOffset, xOffset, yOffset) => {
+				foreach(string line in File.ReadAllLines(filename)) {
+					string[] values = line.Split(',');
+					string[] bbValues = values[4].Split('|');
+					List<int> bb = new List<int>();
+					for(int i = 0; i < 4; i++) {
+						bb.Add(int.Parse(bbValues[i]) + (i < 2 ? xOffset : yOffset));
+					}
 
-				_transDefs.Add(new transdef() {
-					name = values[0],
-					gate = int.Parse(values[1]),
-					c1 = int.Parse(values[2]),
-					c2 = int.Parse(values[3]),
-					bb = bb
-				});
-			}
+					_transDefs.Add(new transdef() {
+						name = namePrefix + values[0],
+						gate = convertId(int.Parse(values[1]) + idOffset),
+						c1 = convertId(int.Parse(values[2]) + idOffset),
+						c2 = convertId(int.Parse(values[3]) + idOffset),
+						bb = bb
+					});
+				}
+			};
+
+			loadDefs("transdefs.txt", "", 0, ppuXOffset, ppuYOffset);
+			loadDefs("cputransdefs.txt", "cpu_", cpuOffset, cpuXOffset, cpuYOffset);
 		}
 
 		void loadNodeNames()
 		{
-			foreach(string line in File.ReadAllLines("nodenames.txt")) {
-				string[] values = line.Split(',');
-				_nodeNumberByName[values[0]] = int.Parse(values[1]);
-				_nodeNameByNumber[int.Parse(values[1])] = values[0];
-			}
+			Action<string, string, int> loadDefs = (filename, namePrefix, idOffset) => {
+				foreach(string line in File.ReadAllLines(filename)) {
+					string[] values = line.Split(',');
+					_nodeNumberByName[namePrefix + values[0]] = int.Parse(values[1]) + idOffset;
+					_nodeNameByNumber[int.Parse(values[1]) + idOffset] = namePrefix + values[0];
+				}
+			};
+
+			loadDefs("nodenames.txt", "", 0);
+			loadDefs("cpunodenames.txt", "cpu_", cpuOffset);
 		}
 
 		void setupNodes()

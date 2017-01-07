@@ -13,8 +13,13 @@ namespace GUI
 {
 	public partial class ctrlChipDisplay : UserControl
 	{
-		const int _canvasSize = 5000;
-		const int _chipSize = 10000;
+		const int _chipSizeX = 12000;
+		const int _chipSizeY = 21500;
+		const double _xyRatio = (double)_chipSizeY/_chipSizeX;
+		const int _canvasSizeX = 3000;
+		const int _canvasSizeY = (int)(_canvasSizeX*_xyRatio);
+		int _dimensionX = 0;
+		int _dimensionY = 0;
 
 		bool[] _visibleLayers = new bool[] { true, true, true, true, true, true };
 		Color[] _layerColors = new Color[] {
@@ -39,10 +44,13 @@ namespace GUI
 		public ctrlChipDisplay()
 		{
 			InitializeComponent();
+		}
 
+		public void SetChipDefinitions(ChipDefinitions chipDef)
+		{
 			bool designMode = (LicenseManager.UsageMode == LicenseUsageMode.Designtime);
 			if(!designMode) {
-				_chipDef = new ChipDefinitions();
+				_chipDef = chipDef;
 				RenderChip();
 				tmrDrawChip.Enabled = true;
 			}
@@ -86,17 +94,17 @@ namespace GUI
 		
 		public void SetVisibleLayers(bool showDiffusion, bool showGroundedDiffusion, bool showPoweredDiffusion, bool showPolysilicon, bool showMetal, bool showProtection)
 		{
-			_visibleLayers = new bool[] { showDiffusion, showGroundedDiffusion, showPoweredDiffusion, showPolysilicon, showMetal, showProtection };
+			_visibleLayers = new bool[] { showMetal, showDiffusion, showProtection, showGroundedDiffusion, showPoweredDiffusion, showPolysilicon };
 			_viewPortChanged = true;
 			RenderChip();
 		}
 
 		public void RenderChip()
 		{
-			_imgBackground = new Bitmap(_canvasSize, _canvasSize);
-			_imgHitBuffer = new Bitmap(_canvasSize, _canvasSize);
-			_imgHighlight = new Bitmap(_canvasSize, _canvasSize);
-			_imgHighNodes = new Bitmap(_canvasSize, _canvasSize);
+			_imgBackground = new Bitmap(_canvasSizeX, _canvasSizeY);
+			_imgHitBuffer = new Bitmap(_canvasSizeX, _canvasSizeY);
+			_imgHighlight = new Bitmap(_canvasSizeX, _canvasSizeY);
+			_imgHighNodes = new Bitmap(_canvasSizeX, _canvasSizeY);
 
 			using(Graphics g = Graphics.FromImage(_imgBackground)) {
 				DrawBackground(g);
@@ -113,15 +121,10 @@ namespace GUI
 
 			RefreshPicture();
 		}
-
-		private int ScaleDistance(int x)
-		{
-			return (int)Math.Round((double)(x*_canvasSize/_chipSize));
-		}
-		
+	
 		private void DrawBackground(Graphics g)
 		{
-			g.FillRectangle(Brushes.Black, 0, 0, _canvasSize, _canvasSize);
+			g.FillRectangle(Brushes.Black, 0, 0, _canvasSizeX, _canvasSizeY);
 
 			foreach(List<int> segmentDef in _chipDef.SegmentDefs) {
 				int layer = segmentDef[2];
@@ -135,7 +138,7 @@ namespace GUI
 
 		private void DrawHitBuffer(Graphics g)
 		{
-			g.FillRectangle(Brushes.Black, 0, 0, _canvasSize, _canvasSize);
+			g.FillRectangle(Brushes.Black, 0, 0, _canvasSizeX, _canvasSizeY);
 
 			foreach(List<int> segmentDef in _chipDef.SegmentDefs) {
 				int segmentID = segmentDef[0];
@@ -149,15 +152,17 @@ namespace GUI
 
 		private void DrawSegment(Graphics g, Brush brush, List<int> segment, bool drawBorder)
 		{
+			Func<int, int> scaleDistance = (x) => { return (int)Math.Round((double)(x*_canvasSizeX/_chipSizeX)); };
+
 			int dx = 0;//200;
 			int dy = 0;//-300;
 			GraphicsPath path = new GraphicsPath();
 			Point[] points = new Point[segment.Count / 2 + 1];
-			points[0] = new Point(ScaleDistance(segment[0]+dx), ScaleDistance(_chipSize-segment[1]+dy));
+			points[0] = new Point(scaleDistance(segment[0]+dx), scaleDistance(_chipSizeY-segment[1]+dy));
 			for(var i = 2; i<segment.Count; i+=2) {
-				points[i/2] = new Point(ScaleDistance(segment[i]+dx), ScaleDistance(_chipSize-segment[i+1]+dy));
+				points[i/2] = new Point(scaleDistance(segment[i]+dx), scaleDistance(_chipSizeY-segment[i+1]+dy));
 			}
-			points[segment.Count / 2] = new Point(ScaleDistance(segment[0]+dx), ScaleDistance(_chipSize-segment[1]+dy));
+			points[segment.Count / 2] = new Point(scaleDistance(segment[0]+dx), scaleDistance(_chipSizeY-segment[1]+dy));
 
 			path.AddLines(points);
 			g.FillPath(brush, path);
@@ -173,11 +178,17 @@ namespace GUI
 				if(_imgViewport == null || _imgViewport.Width != picChip.Width || _imgViewport.Height != picChip.Height) {
 					_imgViewport = new Bitmap(picChip.Width, picChip.Height);
 					picChip.Image = new Bitmap(picChip.Width, picChip.Height);
+					if(picChip.Width * _xyRatio > picChip.Height) {
+						_dimensionX = (int)(picChip.Height / _xyRatio);
+						_dimensionY = picChip.Height;
+					} else {
+						_dimensionX = picChip.Width;
+						_dimensionY = (int)(picChip.Width * _xyRatio);
+					}
 				}
 
-				int dimension = Math.Min(picChip.Width, picChip.Height);
-				_translateX = Math.Min(Math.Max(_translateX, -dimension / 2), dimension * _chipScale - dimension / 2);
-				_translateY = Math.Min(Math.Max(_translateY, -dimension / 2), dimension * _chipScale - dimension / 2);
+				_translateX = Math.Min(Math.Max(_translateX, -_dimensionX / 2), _dimensionX * _chipScale - _dimensionX / 2);
+				_translateY = Math.Min(Math.Max(_translateY, -_dimensionY / 2), _dimensionY * _chipScale - _dimensionY / 2);
 
 				using(Graphics g = Graphics.FromImage(_imgViewport)) {
 					g.InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -185,12 +196,11 @@ namespace GUI
 					g.SmoothingMode = SmoothingMode.None;
 					g.Clear(Color.Black);
 
-					int size = dimension*_chipScale;
-					int xPos = -_translateX + (picChip.Width - dimension) / 2;
-					int yPos = -_translateY + (picChip.Height - dimension) / 2;
+					int xPos = -_translateX + (picChip.Width - _dimensionX) / 2;
+					int yPos = -_translateY + (picChip.Height - _dimensionY) / 2;
 
-					g.DrawImage(_imgBackground, xPos, yPos, size, size);					
-					g.DrawImage(_imgHighlight, xPos, yPos, size, size);
+					g.DrawImage(_imgBackground, xPos, yPos, _dimensionX*_chipScale, (int)(_dimensionY*_chipScale));
+					g.DrawImage(_imgHighlight, xPos, yPos, _dimensionX*_chipScale, (int)(_dimensionY*_chipScale));
 
 					g.DrawLine(Pens.White, 0, picChip.Height - 1, picChip.Width - 1, picChip.Height - 1);
 				}
@@ -213,13 +223,11 @@ namespace GUI
 						g.PixelOffsetMode = PixelOffsetMode.Half;
 						g.SmoothingMode = SmoothingMode.None;
 
-						int dimension = Math.Min(picChip.Width, picChip.Height);
-						int size = dimension*_chipScale;
-						int xPos = -_translateX + (picChip.Width - dimension) / 2;
-						int yPos = -_translateY + (picChip.Height - dimension) / 2;
+						int xPos = -_translateX + (picChip.Width - _dimensionX) / 2;
+						int yPos = -_translateY + (picChip.Height - _dimensionY) / 2;
 
 						lock(_imgHighNodes) {
-							g.DrawImage(_imgHighNodes, xPos, yPos, size, size);
+							g.DrawImage(_imgHighNodes, xPos, yPos, _dimensionX*_chipScale, (int)(_dimensionY*_chipScale));
 						}
 					}
 				}
@@ -231,9 +239,8 @@ namespace GUI
 		private void ZoomOut()
 		{
 			if(_chipScale > 1) {
-				int dimension = Math.Min(picChip.Width, picChip.Height);
-				_translateX = _translateX / 2 - dimension / 4;
-				_translateY = _translateY / 2 - dimension / 4;
+				_translateX = _translateX / 2 - _dimensionX / 4;
+				_translateY = _translateY / 2 - _dimensionY / 4;
 				_chipScale /= 2;
 				_viewPortChanged = true;
 			}
@@ -242,10 +249,10 @@ namespace GUI
 		private void ZoomIn(Point location)
 		{
 			if(_chipScale < 32) {
-				int dimension = Math.Min(picChip.Width, picChip.Height);
-				int x = location.X - (picChip.Width - dimension) / 2;
-				_translateX = (_translateX + (x - dimension / 4)) * 2;
-				_translateY = (_translateY + (location.Y - dimension / 4)) * 2;
+				int x = location.X - (picChip.Width - _dimensionX) / 2;
+				int y = location.Y - (picChip.Height - _dimensionY) / 2;
+				_translateX = (_translateX + (x - _dimensionX / 4)) * 2;
+				_translateY = (_translateY + (y - _dimensionY / 4)) * 2;
 				_chipScale *= 2;
 				_viewPortChanged = true;
 			}
@@ -282,14 +289,13 @@ namespace GUI
 		
 		private void FindNodeAtLocation(Point location, bool highlightGroup)
 		{
-			int dimension = Math.Min(picChip.Width, picChip.Height);
-			int x = (location.X + _translateX - (picChip.Width - dimension) / 2);
-			int y = (location.Y + _translateY - (picChip.Height - dimension) / 2);
+			int x = (location.X + _translateX - (picChip.Width - _dimensionX) / 2);
+			int y = (location.Y + _translateY - (picChip.Height - _dimensionY) / 2);
 
-			int xChip = x * _canvasSize / (dimension * _chipScale);
-			int yChip = y * _canvasSize / (dimension * _chipScale);
+			int xChip = x * _canvasSizeX / (_dimensionX * _chipScale);
+			int yChip = y * _canvasSizeY / (_dimensionY * _chipScale);
 
-			if(xChip >= 0 && xChip < _canvasSize && yChip >= 0 && yChip < _canvasSize) {
+			if(xChip >= 0 && xChip < _canvasSizeX && yChip >= 0 && yChip < _canvasSizeY) {
 				List<node> nodes = _chipDef.Nodes;
 
 				int w = _imgHitBuffer.GetPixel(xChip, yChip).ToArgb() & 0xFFFFFF;
@@ -299,8 +305,8 @@ namespace GUI
 				// we have a node, but maybe we clicked over a transistor
 				List<int> nodelist = new List<int>() { w };
 				// match the coordinate against transistor gate bounding boxes
-				x = xChip*_chipSize/_canvasSize;
-				y = _chipSize - yChip*_chipSize/_canvasSize;
+				x = xChip*_chipSizeX/_canvasSizeX;
+				y = _chipSizeY - yChip*_chipSizeY/_canvasSizeY;
 				string s1 = "x: " + x + " y: " + y;
 				string s2 = "node: " + w + " " + _chipDef.getNodeName(w);
 
