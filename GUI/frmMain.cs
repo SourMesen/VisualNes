@@ -713,5 +713,12 @@ namespace GUI
 				hexBox.BytesPerLine = 16;
 			}
 		}
+
+		private void mnuAbout_Click(object sender, EventArgs e)
+		{
+			using(frmAbout frm = new frmAbout()) {
+				frm.ShowDialog();
+			}
+		}
 	}
 }

@@ -74,6 +74,8 @@
 			this.stepToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.nextPixelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.splitContainer1 = new GUI.ctrlSplitContainer();
 			this.ctrlChipDisplay = new GUI.ctrlChipDisplay();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -243,7 +245,8 @@
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.debugToolStripMenuItem1,
-            this.optionsToolStripMenuItem});
+            this.optionsToolStripMenuItem,
+            this.helpToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(1079, 24);
@@ -612,6 +615,22 @@
 			// 
 			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
 			this.toolStripMenuItem3.Size = new System.Drawing.Size(125, 22);
+			// 
+			// helpToolStripMenuItem
+			// 
+			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuAbout});
+			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+			this.helpToolStripMenuItem.Text = "Help";
+			// 
+			// mnuAbout
+			// 
+			this.mnuAbout.Image = global::GUI.Properties.Resources.Icon;
+			this.mnuAbout.Name = "mnuAbout";
+			this.mnuAbout.Size = new System.Drawing.Size(152, 22);
+			this.mnuAbout.Text = "About";
+			this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
 			// 
 			// splitContainer1
 			// 
@@ -2242,6 +2261,8 @@
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel10;
 		private System.Windows.Forms.Label label12;
 		private System.Windows.Forms.ComboBox cboLogMaxLines;
+		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem mnuAbout;
 	}
 }
 

@@ -28,6 +28,7 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAbout));
 			this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+			this.logoPictureBox = new System.Windows.Forms.PictureBox();
 			this.labelProductName = new System.Windows.Forms.Label();
 			this.labelCopyright = new System.Windows.Forms.Label();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -37,10 +38,9 @@
 			this.okButton = new System.Windows.Forms.Button();
 			this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
 			this.lblAcknowledgments = new System.Windows.Forms.Label();
-			this.logoPictureBox = new System.Windows.Forms.PictureBox();
 			this.tableLayoutPanel.SuspendLayout();
-			this.flowLayoutPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
+			this.flowLayoutPanel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tableLayoutPanel
@@ -61,7 +61,7 @@
 			this.tableLayoutPanel.Name = "tableLayoutPanel";
 			this.tableLayoutPanel.RowCount = 7;
 			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 0F));
 			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -69,6 +69,18 @@
 			this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel.Size = new System.Drawing.Size(370, 163);
 			this.tableLayoutPanel.TabIndex = 0;
+			// 
+			// logoPictureBox
+			// 
+			this.logoPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
+			this.logoPictureBox.Image = global::GUI.Properties.Resources.Icon;
+			this.logoPictureBox.Location = new System.Drawing.Point(10, 0);
+			this.logoPictureBox.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
+			this.logoPictureBox.Name = "logoPictureBox";
+			this.tableLayoutPanel.SetRowSpan(this.logoPictureBox, 4);
+			this.logoPictureBox.Size = new System.Drawing.Size(64, 65);
+			this.logoPictureBox.TabIndex = 12;
+			this.logoPictureBox.TabStop = false;
 			// 
 			// labelProductName
 			// 
@@ -86,7 +98,7 @@
 			// 
 			this.labelCopyright.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.labelCopyright.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.labelCopyright.Location = new System.Drawing.Point(90, 34);
+			this.labelCopyright.Location = new System.Drawing.Point(90, 17);
 			this.labelCopyright.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
 			this.labelCopyright.Name = "labelCopyright";
 			this.labelCopyright.Size = new System.Drawing.Size(277, 17);
@@ -98,7 +110,7 @@
 			// 
 			this.flowLayoutPanel1.Controls.Add(this.lblWebsite);
 			this.flowLayoutPanel1.Controls.Add(this.lblLink);
-			this.flowLayoutPanel1.Location = new System.Drawing.Point(84, 51);
+			this.flowLayoutPanel1.Location = new System.Drawing.Point(84, 34);
 			this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
 			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
 			this.flowLayoutPanel1.Size = new System.Drawing.Size(236, 18);
@@ -135,7 +147,7 @@
 			this.labelVersion.Location = new System.Drawing.Point(90, 17);
 			this.labelVersion.Margin = new System.Windows.Forms.Padding(6, 0, 3, 0);
 			this.labelVersion.Name = "labelVersion";
-			this.labelVersion.Size = new System.Drawing.Size(146, 17);
+			this.labelVersion.Size = new System.Drawing.Size(146, 1);
 			this.labelVersion.TabIndex = 0;
 			this.labelVersion.Text = "Version: 1.0";
 			this.labelVersion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -169,18 +181,6 @@
 			this.lblAcknowledgments.TabIndex = 30;
 			this.lblAcknowledgments.Text = resources.GetString("lblAcknowledgments.Text");
 			// 
-			// logoPictureBox
-			// 
-			this.logoPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Top;
-			this.logoPictureBox.Image = global::GUI.Properties.Resources.Icon;
-			this.logoPictureBox.Location = new System.Drawing.Point(10, 0);
-			this.logoPictureBox.Margin = new System.Windows.Forms.Padding(0, 0, 0, 5);
-			this.logoPictureBox.Name = "logoPictureBox";
-			this.tableLayoutPanel.SetRowSpan(this.logoPictureBox, 4);
-			this.logoPictureBox.Size = new System.Drawing.Size(64, 65);
-			this.logoPictureBox.TabIndex = 12;
-			this.logoPictureBox.TabStop = false;
-			// 
 			// frmAbout
 			// 
 			this.AcceptButton = this.okButton;
@@ -190,6 +190,7 @@
 			this.ClientSize = new System.Drawing.Size(380, 173);
 			this.Controls.Add(this.tableLayoutPanel);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "frmAbout";
@@ -198,9 +199,9 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "About - Mesen";
 			this.tableLayoutPanel.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
 			this.flowLayoutPanel1.ResumeLayout(false);
 			this.flowLayoutPanel1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
 			this.ResumeLayout(false);
 
 		}

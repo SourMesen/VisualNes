@@ -119,6 +119,26 @@
   </resheader>
   <data name="lblAcknowledgments.Text" xml:space="preserve">
     <value>Credits to Quietust for all of his work on both the Visual 2A03 and Visual 2C02 - this couldn't exist without them.
-Credits to the authors of the original Visual 6502 (Brian Silverman &amp;&amp; Barry Silverman).  Much of this software is based on their work.</value>
+And thank you to the authors of the original Visual 6502 (Brian Silverman &amp;&amp; Barry Silverman).  Much of this software is based on their work.</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAEBAAAAAAGABoAwAAFgAAACgAAAAQAAAAIAAAAAEAGAAAAAAAAAMAAAAAAAAAAAAAAAAAAAAA
+        AAAqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqX/////////
+        //////////////////////////////////////////////8qKqUqKqX///////8qKqUqKqUqKqUqKqX/
+        //////8qKqX///////8qKqX///////8qKqUqKqX///////8qKqX///////////////////8qKqX/////
+        //8qKqX/+PD///8qKqUqKqX///////////8qKqUqKqX///////////8qKqUqKqUqKqUqKqX/+PD///8q
+        KqUqKqX///////////////////8qKqX///////8qKqX///////8qKqX/+PD///8qKqUqKqX///////8q
+        KqUqKqUqKqUqKqX///////8qKqUqKqUqKqUqKqX/+PD///8qKqUqKqX/////////////////////////
+        //////////////////////////////8qKqUqKqX/////////////////////////////////////////
+        //////////////8qKqUqKqX///////8qKqUqKqUqKqUqKqX///////8qKqUqKqUqKqUqKqX///////8q
+        KqUqKqX///////8qKqX///////////////////8qKqX///////////////////8qKqUqKqX/////////
+        //8qKqUqKqX///////////8qKqX///////////////////8qKqUqKqX///////////////////8qKqX/
+        //////8qKqX///////////////////8qKqUqKqX///////8qKqUqKqUqKqUqKqX///////8qKqUqKqUq
+        KqUqKqX/+PD///8qKqUqKqX///////////////////////////////////////////////////////8q
+        KqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUqKqUAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+</value>
   </data>
 </root>
