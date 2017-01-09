@@ -633,6 +633,11 @@ namespace GUI
 					Array.Copy(rom, 16, prgRam, 0, prgRamSize);
 					Array.Copy(rom, 16 + prgRamSize, chrRam, 0, chrRamSize);
 
+					if(prgRamSize == 0x4000) {
+						Array.Resize(ref prgRam, 0x8000);
+						Array.Copy(prgRam, 0, prgRam, 0x4000, 0x4000);
+					}
+
 					lock(_runLock) {
 						CoreWrapper.setMemoryState(MemoryType.ChrRam, chrRam);
 						CoreWrapper.setMemoryState(MemoryType.PrgRam, prgRam);
