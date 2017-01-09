@@ -32,43 +32,55 @@ void initChip(string state, bool softReset)
 	}
 
 	if(state.empty()) {
-		for(node &n : nodes) {
-			n.state = false;
-			n.floating = true;
-		}
+		if(softReset) {
+			setLow(nodenamereset);
+			for(int i = 0; i < 12 * 8 * 2 + 1; i++) {
+				if(isNodeHigh(nodenames["clk0"])) {
+					setLow("clk0");
+				} else {
+					setHigh("clk0");
+				}
+			}
+			setHigh(nodenamereset);
+		} else {
+			for(node &n : nodes) {
+				n.state = false;
+				n.floating = true;
+			}
 
-		nodes[ngnd].state = false;
-		nodes[ngnd].floating = false;
-		nodes[npwr].state = true;
-		nodes[npwr].floating = false;
+			nodes[ngnd].state = false;
+			nodes[ngnd].floating = false;
+			nodes[npwr].state = true;
+			nodes[npwr].floating = false;
 
-		for(auto kvp : transistors) {
-			kvp.second->on = (kvp.second->gate == npwr);
-		}
+			for(auto kvp : transistors) {
+				kvp.second->on = (kvp.second->gate == npwr);
+			}
 
-		setLow(nodenamereset);
-		setLow("clk0");
-		setHigh("io_ce");
-		setHigh("int");
-
-		//CPU reset
-		for(int i = 0; i<6; i++) { 
-			setHigh("clk0");
+			setLow(nodenamereset);
 			setLow("clk0");
+			setHigh("io_ce");
+			setHigh("int");
+
+			//CPU reset
+			for(int i = 0; i<6; i++) {
+				setHigh("clk0");
+				setLow("clk0");
+			}
+
+			setLow("cpu_so");
+			setHigh("cpu_irq");
+			setHigh("cpu_nmi");
+			//CPU reset
+
+			recalcNodeList(allNodes());
+			for(int i = 0; i < 12*8; i++) {
+				setHigh("clk0");
+				setLow("clk0");
+			}
+
+			setHigh(nodenamereset);
 		}
-
-		setLow("cpu_so");
-		setHigh("cpu_irq");
-		setHigh("cpu_nmi");
-		//CPU reset
-
-		recalcNodeList(allNodes());
-		for(int i = 0; i < 12*8; i++) {
-			setHigh("clk0");
-			setLow("clk0");
-		}
-
-		setHigh(nodenamereset);
 	} else {
 		setState(state);
 	}
@@ -82,6 +94,7 @@ void initChip(string state, bool softReset)
 
 void halfStep()
 {
+	bool cpu_clk0 = isNodeHigh(nodenames["cpu_clk0"]);
 	bool clk = isNodeHigh(nodenames["clk0"]);
 
 	if(clk) {
@@ -91,7 +104,7 @@ void halfStep()
 	}
 	
 	//Simulate the 74139's logic
-	if(isNodeHigh(nodenames["cpu_ab13"]) && !isNodeHigh(nodenames["cpu_ab14"]) && !isNodeHigh(nodenames["cpu_ab15"]) && isNodeHigh(nodenames["cpu_clk0"])) {
+	if(isNodeHigh(nodenames["cpu_ab13"]) && !isNodeHigh(nodenames["cpu_ab14"]) && !isNodeHigh(nodenames["cpu_ab15"]) && isNodeHigh(nodenames["cpu_phi2"])) {
 		setLow("io_ce");
 	} else {
 		setHigh("io_ce");
@@ -99,8 +112,8 @@ void halfStep()
 
 	handleChrBus();
 
-	if(clk != isNodeHigh(nodenames["cpu_clk0"])) {
-		if(clk) { 
+	if(cpu_clk0 != isNodeHigh(nodenames["cpu_clk0"])) {
+		if(cpu_clk0) {
 			handleCpuBusRead(); 
 		} else { 
 			handleCpuBusWrite();
@@ -284,24 +297,6 @@ int readCpuDataBus() {
 	return lastCpuDbValue;
 }
 
-void writeCpuDataBus(int x) {
-	shared_ptr<vector<int>> recalcs(new vector<int>());
-	for(int i = 0; i<8; i++) {
-		int nn = nodenames["cpu_db" + std::to_string(i)];
-		node &n = nodes[nn];
-		if((x % 2) == 0) { 
-			n.pulldown = true; 
-			n.pullup = false; 
-		} else { 
-			n.pulldown = false; 
-			n.pullup = true; 
-		}
-		recalcs->push_back(nn);
-		x >>= 1;
-	}
-	recalcNodeList(recalcs);
-}
-
 void handleCpuBusRead() {
 	if(isNodeHigh(nodenames["cpu_rw"])) {
 		int a = readCpuAddressBus();
@@ -312,7 +307,7 @@ void handleCpuBusRead() {
 		/*if(isNodeHigh(nodenames['sync'])) {
 			eval(fetchTriggers[d]);
 		}*/
-		writeCpuDataBus(d);
+		writeBits("cpu_db", 8, d);
 	}
 }
 

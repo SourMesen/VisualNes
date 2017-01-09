@@ -34,8 +34,6 @@ int mCpuRead(int a);
 void mCpuWrite(int a, int d);
 int readCpuAddressBus();
 int readCpuDataBus();
-void writeCpuDataBus(int x);
-
 
 void handleChrBus();
 void handleCpuBusWrite();
