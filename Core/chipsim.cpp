@@ -25,31 +25,25 @@ THE SOFTWARE.
 #include <cstring>
 #include "datastructures.h"
 #include "chipsim.h"
+#include "wires.h"
+#include "datadefs.h"
 
-extern vector<node> nodes;
-extern unordered_map<string, shared_ptr<transistor>> transistors;
-extern unordered_map<string, int> nodenames;
-extern int ngnd;
-extern int npwr;
-
-vector<int> processedNodes;
-shared_ptr<vector<int>> recalclists[2];
-shared_ptr<vector<int>> recalclist;
-vector<int> group;
+vector<uint16_t> processedNodes;
+shared_ptr<vector<uint16_t>> recalclists[2];
+shared_ptr<vector<uint16_t>> recalclist;
+vector<uint16_t> group;
 
 bool groupEmpty = true;
 bool hasGnd = false;
 bool hasPwr = false;
 
-void recalcNodeList(shared_ptr<vector<int>> list) {
+void recalcNodeList(shared_ptr<vector<uint16_t>> list) {
 	if(processedNodes.empty()) {
 		processedNodes.insert(processedNodes.end(), nodes.size(), 0);
-		recalclists[0].reset(new vector<int>(100));
-		recalclists[1].reset(new vector<int>(100));
+		recalclists[0].reset(new vector<uint16_t>(100));
+		recalclists[1].reset(new vector<uint16_t>(100));
 	} else {
-		memset(processedNodes.data(), 0, processedNodes.size() * sizeof(int));
 		recalclists[0]->clear();
-		recalclists[1]->clear();
 	}
 	recalclist = recalclists[0];
 
@@ -76,38 +70,40 @@ void recalcNodeList(shared_ptr<vector<int>> list) {
 	}
 }
 
-void recalcNode(int nodeNumber) {
+void recalcNode(uint16_t nodeNumber) {
 	if(nodeNumber == ngnd) return;
 	if(nodeNumber == npwr) return;
 	getNodeGroup(nodeNumber);
 	bool newState = getNodeValue();
 
-	for(int nn : group) {
+	for(uint16_t nn : group) {
 		node& n = nodes[nn];
 		if(n.state != newState) {
 			n.state = newState;
-			for(shared_ptr<transistor> &t : n.gates) {
-				if(n.state) turnTransistorOn(*t);
-				else turnTransistorOff(*t);
+			for(uint16_t i : n.gates) {
+				if(n.state) turnTransistorOn(i);
+				else turnTransistorOff(i);
 			}
 		}
 	}
 }
 
-void turnTransistorOn(transistor &t) {
+void turnTransistorOn(uint16_t i) {
+	transistor &t = transistors[i];
 	if(t.on) return;
 	t.on = true;
 	addRecalcNode(t.c1);
 }
 
-void turnTransistorOff(transistor &t) {
+void turnTransistorOff(uint16_t i) {
+	transistor &t = transistors[i];
 	if(!t.on) return;
 	t.on = false;
 	addRecalcNode(t.c1);
 	addRecalcNode(t.c2);
 }
 
-void addRecalcNode(int nn) {
+void addRecalcNode(uint16_t nn) {
 	if(nn == ngnd) return;
 	if(nn == npwr) return;
 
@@ -119,35 +115,36 @@ void addRecalcNode(int nn) {
 	groupEmpty = false;
 }
 
-void getNodeGroup(int i) {
+void getNodeGroup(uint16_t nn) {
 	hasGnd = false;
 	hasPwr = false;
 	group.clear();
-	addNodeToGroup(i);
+	addNodeToGroup(nn);
 }
 
-void addNodeToGroup(int i) {
-	if(i == ngnd) {
+void addNodeToGroup(uint16_t nn) {
+	if(nn == ngnd) {
 		hasGnd = true;
 		return;
 	}
-	if(i == npwr) {
+	if(nn == npwr) {
 		hasPwr = true;
 		return;
 	}
-	if(find(group.begin(), group.end(), i) != group.end()) return;
-	group.push_back(i);
+	if(find(group.begin(), group.end(), nn) != group.end()) return;
+	group.push_back(nn);
 
-	for(shared_ptr<transistor> &t : nodes[i].c1c2s) {
-		if(t->on) {
-			addNodeToGroup(t->c1 == i ? t->c2 : t->c1);
+	for(uint16_t i = 0, len = nodeCount[nn]; i < len; i++) {
+		transistor &t = transistors[nodeC1c2s[nn][i]];
+		if(t.on) {
+			addNodeToGroup(t.c1 == nn ? t.c2 : t.c1);
 		}
 	}
 }
 
 bool getNodeValue() {
 	if(hasGnd && hasPwr) {
-		for(int i : group) {
+		for(uint16_t i : group) {
 			if(i == 359 || i == 566 || i == 691 || i == 871 || i == 870 || i == 864 || i == 856 || i == 818) {
 				hasGnd = hasPwr = false;
 				break;
@@ -163,7 +160,7 @@ bool getNodeValue() {
 
 	int hi_area = 0;
 	int lo_area = 0;
-	for(int nn : group) {
+	for(uint16_t nn : group) {
 		node &n = nodes[nn];
 		if(n.pullup) return true;
 		if(n.pulldown) return false;
@@ -173,20 +170,19 @@ bool getNodeValue() {
 	return (hi_area > lo_area);
 }
 
-
-bool isNodeHigh(int32_t nn) {
+bool isNodeHigh(uint16_t nn) {
 	return(nodes[nn].state);
 }
 
 bool isTransistorOn(char* transistorName)
 {
-	return transistors[transistorName]->on;
+	return transistors[transistorIndexByName[transistorName]].on;
 }
 
-shared_ptr<vector<int>> allNodes() {
-	shared_ptr<vector<int>> result(new vector<int>());
+shared_ptr<vector<uint16_t>> allNodes() {
+	shared_ptr<vector<uint16_t>> result(new vector<uint16_t>());
 	for(node& node : nodes) {
-		if(node.num != npwr && node.num != ngnd && node.num >= 0) {
+		if(node.num != npwr && node.num != ngnd && node.num != EMPTYNODE) {
 			result->push_back(node.num);
 		}
 	}
@@ -214,31 +210,29 @@ void setState(string str) {
 		if(nodes[i].num < 0) continue;
 
 		nodes[i].state = state;
-		for(shared_ptr<transistor> &t : nodes[i].gates) {
-			t->on = state;
+		for(uint16_t i : nodes[i].gates) {
+			transistors[i].on = state;
 		}
 	}
 }
 
 void setFloat(string name) {
-	int nn = nodenames[name];
+	uint16_t nn = nodenames[name];
 	nodes[nn].pullup = false;
 	nodes[nn].pulldown = false;
-	recalcNodeList(shared_ptr<vector<int>>(new vector<int> { nn }));
+	recalcNodeList(shared_ptr<vector<uint16_t>>(new vector<uint16_t> { nn }));
 }
 
 void setHigh(string name) {
-	int nn = nodenames[name];
+	uint16_t nn = nodenames[name];
 	nodes[nn].pullup = true;
 	nodes[nn].pulldown = false;
-	recalcNodeList(shared_ptr<vector<int>>(new vector<int>{ nn }));
+	recalcNodeList(shared_ptr<vector<uint16_t>>(new vector<uint16_t>{ nn }));
 }
 
 void setLow(string name) {
-	int nn = nodenames[name];
+	uint16_t nn = nodenames[name];
 	nodes[nn].pullup = false;
 	nodes[nn].pulldown = true;
-	recalcNodeList(shared_ptr<vector<int>>(new vector<int>{ nn }));
+	recalcNodeList(shared_ptr<vector<uint16_t>>(new vector<uint16_t>{ nn }));
 }
-
-//function arrayContains(arr, el) { return arr.indexOf(el) != -1; }

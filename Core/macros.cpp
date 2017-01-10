@@ -4,9 +4,9 @@
 #include "wires.h"
 #include "chipsim.h"
 #include "macros.h"
+#include "datadefs.h"
 
 string nodenamereset = "res";
-extern std::unordered_map<std::string, int> nodenames;
 
 uint8_t chrRam[0x2000];
 uint8_t nametableRam[4][0x400];
@@ -53,8 +53,8 @@ void initChip(string state, bool softReset)
 			nodes[npwr].state = true;
 			nodes[npwr].floating = false;
 
-			for(auto kvp : transistors) {
-				kvp.second->on = (kvp.second->gate == npwr);
+			for(transistor &t : transistors) {
+				t.on = (t.gate == npwr);
 			}
 
 			setLow(nodenamereset);
@@ -188,7 +188,7 @@ void writeBit(string name, int x) {
 }
 
 void writeBits(string name, int n, int x) {
-	shared_ptr<vector<int>> recalcs(new vector<int>());
+	shared_ptr<vector<uint16_t>> recalcs(new vector<uint16_t>());
 	for(int i = 0; i<n; i++) {
 		int nn = nodenames[name + std::to_string(i)];
 		if((x % 2) == 0) {
@@ -205,7 +205,7 @@ void writeBits(string name, int n, int x) {
 }
 
 void floatBits(string name, int n) {
-	shared_ptr<vector<int>> recalcs(new vector<int>());
+	shared_ptr<vector<uint16_t>> recalcs(new vector<uint16_t>());
 	for(int i = 0; i<n; i++) {
 		int nn = nodenames[name + std::to_string(i)];
 		nodes[nn].pulldown = false;

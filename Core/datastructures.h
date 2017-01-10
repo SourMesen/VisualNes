@@ -1,36 +1,34 @@
 #pragma once
 #include "stdafx.h"
 
+constexpr uint16_t EMPTYNODE = 65535;
+
 struct transdef
 {
 	string name;
-	int gate;
-	int c1;
-	int c2;
-	vector<int> bb;
-	vector<int> unused;
-	bool unused2;
+	uint16_t gate;
+	uint16_t c1;
+	uint16_t c2;
 };
 
 struct transistor
 {
-	string name;
 	bool on;
-	int gate;
-	int c1;
-	int c2;
-	vector<int> bb;
+	uint16_t c1;
+	uint16_t c2;
+	uint16_t gate;
+	string name;
 };
 
 struct node
 {
-	vector<vector<int>> segs;
-	int num = -1;
+	bool state = false;
 	bool pullup = false;
 	bool pulldown = false;
-	bool state = false;
-	vector<shared_ptr<transistor>> gates;
-	vector<shared_ptr<transistor>> c1c2s;
-	int area = 0;
 	bool floating = true;
+	
+	int area = 0;
+	uint16_t num = EMPTYNODE;
+	vector<uint16_t> gates;
+	vector<vector<uint16_t>> segs;
 };

@@ -23,17 +23,14 @@ THE SOFTWARE.
 #include "stdafx.h"
 #include "datastructures.h"
 #include "wires.h"
-
-extern std::vector<std::vector<int>> segdefs;
-extern std::vector<transdef> transdefs;
-extern std::unordered_map<std::string, int> nodenames;
+#include "datadefs.h"
 
 vector<node> nodes;
-unordered_map<string, shared_ptr<transistor>> transistors;
-unordered_map<int, std::string> nodenameByNumber;
-
-int ngnd;
-int npwr;
+vector<transistor> transistors;
+uint8_t nodeCount[MaxNodeCount] = {};
+uint16_t nodeC1c2s[MaxNodeCount][MaxC1C2Count] = {};
+unordered_map<string, uint16_t> transistorIndexByName;
+unordered_map<uint16_t, std::string> nodenameByNumber;
 
 void setupNodes() 
 {
@@ -47,7 +44,7 @@ void setupNodes()
 		std::vector<int> &seg = segdefs[i];
 		int w = seg[0];
 
-		if(nodes[w].num == -1) {
+		if(nodes[w].num == EMPTYNODE) {
 			nodes[w].num = w;
 			nodes[w].pullup = seg[1] == 1;
 			nodes[w].state = false;
@@ -65,28 +62,43 @@ void setupNodes()
 			area = -area;
 		}
 		nodes[w].area += area;
-		vector<int> segments(&seg[3], &seg[seg.size() - 1]);
+		vector<uint16_t> segments(&seg[3], &seg[seg.size() - 1]);
 		nodes[w].segs.push_back(segments);
 	}
 }
 
+int maxCount = 0;
 void setupTransistors()
 {
+	int i = 0;
 	for(transdef &tdef : transdefs) {
 		std::string name = tdef.name;
-		int gate = tdef.gate;
-		int c1 = tdef.c1;
-		int c2 = tdef.c2;
-		std::vector<int> bb = tdef.bb;
+		uint16_t gate = tdef.gate;
+		uint16_t c1 = tdef.c1;
+		uint16_t c2 = tdef.c2;
 
 		if(c1 == ngnd) { c1 = c2; c2 = ngnd; }
 		if(c1 == npwr) { c1 = c2; c2 = npwr; }
 		
-		shared_ptr<transistor> trans = shared_ptr<transistor>(new transistor { name, false, gate, c1, c2, bb });
-		nodes[gate].gates.push_back(trans);
-		nodes[c1].c1c2s.push_back(trans);
-		nodes[c2].c1c2s.push_back(trans);
-		transistors[name] = trans;
+		nodes[gate].gates.push_back(i);
+		if(c1 != npwr && c1 != ngnd) {
+			nodeC1c2s[c1][nodeCount[c1]] = i;
+			nodeCount[c1]++;
+			if(nodeCount[c1] > maxCount) {
+				maxCount = nodeCount[c1];
+			}
+		}
+		if(c2 != npwr && c2 != ngnd) {
+			nodeC1c2s[c2][nodeCount[c2]] = i;
+			nodeCount[c2]++;
+			if(nodeCount[c2] > maxCount) {
+				maxCount = nodeCount[c2];
+			}
+		}
+
+		transistors.push_back({ false, c1, c2, gate, name });
+		transistorIndexByName[name] = i;
+		i++;
 	}
 }
 
@@ -107,9 +119,6 @@ std::string nodeName(int nodeNumber) {
 
 void initDataStructures()
 {
-	ngnd = nodenames["vss"];
-	npwr = nodenames["vcc"];
-
 	setupNodes();
 	setupTransistors();
 	setupNodeNameList();

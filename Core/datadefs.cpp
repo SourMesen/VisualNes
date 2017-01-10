@@ -4,14 +4,14 @@
 
 vector<vector<int>> segdefs;
 vector<transdef> transdefs;
-unordered_map<string, int> nodenames;
+unordered_map<string, uint16_t> nodenames;
 vector<vector<vector<int>>> palette_nodes;
 vector<vector<vector<int>>> sprite_nodes;
 
 //Define connections between CPU and PPU
 //Convert some of the CPU nodes into their PPU equivalent (or vice versa)
 int cpuOffset = 13000;
-unordered_map<int, int> idConvertTable{
+unordered_map<uint16_t, uint16_t> idConvertTable{
 	{ 10000 + cpuOffset, 1 }, //vcc
 	{ 10001 + cpuOffset, 2 }, //vss
 	{ 10004 + cpuOffset, 1934 }, //reset
@@ -35,7 +35,7 @@ unordered_map<int, int> idConvertTable{
 	{ 10092 + cpuOffset, 1224 }, //cpu_rw -> io_rw
 };
 
-int convertId(int id)
+uint16_t convertId(uint16_t id)
 {
 	auto result = idConvertTable.find(id);
 	if(result != idConvertTable.end()) {
@@ -98,20 +98,11 @@ void loadTransistorDefinitions()
 			}
 
 			vector<string> values = split(lineContent, ',');
-			vector<string> bbValues = split(values[4], '|');
-			vector<int> bb;
-			for(string value : bbValues) {
-				bb.push_back(std::stoi(value));
-			}
-
 			transdef def = {
 				namePrefix + values[0],
 				convertId(std::stoi(values[1]) + segmentIdOffset),
 				convertId(std::stoi(values[2]) + segmentIdOffset),
-				convertId(std::stoi(values[3]) + segmentIdOffset),
-				bb,
-				{},
-				false
+				convertId(std::stoi(values[3]) + segmentIdOffset)
 			};
 
 			transdefs.push_back(def);

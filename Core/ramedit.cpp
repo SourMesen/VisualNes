@@ -27,17 +27,17 @@ THE SOFTWARE.
 
 void setBit(int n1, int n2)
 {
-	if((n1 == -1) || (n2 == -1)) return;
-	for(shared_ptr<transistor> &t : nodes[n1].gates) {
-		t->on = true;
+	if(n1 == -1 || n2 == -1) return;
+	for(uint16_t tn : nodes[n1].gates) {
+		transistors[tn].on = true;
 	}
-	for(shared_ptr<transistor> &t : nodes[n2].gates) {
-		t->on = false;
+	for(uint16_t tn : nodes[n2].gates) {
+		transistors[tn].on = false;
 	}
 	nodes[n1].state = true;
 	nodes[n2].state = false;
 
-	shared_ptr<vector<int>> recalcList(new vector<int> { n1, n2 });
+	shared_ptr<vector<uint16_t>> recalcList(new vector<uint16_t> { (uint16_t)n1, (uint16_t)n2 });
 	recalcNodeList(recalcList);
 }
 
@@ -79,7 +79,7 @@ int sprite_read(int addr) {
 	for(int b = 0; b < 8; b++) {
 		int n0 = sprite_nodes[addr][b][0];
 		int n1 = sprite_nodes[addr][b][1];
-		if((n0 == -1) || (n1 == -1))
+		if(n0 == -1 || n1 == -1)
 			continue;
 		if(isNodeHigh(n0))
 			r0 |= 1 << b;
