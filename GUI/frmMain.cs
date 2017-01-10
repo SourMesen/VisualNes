@@ -730,5 +730,11 @@ namespace GUI
 				frm.ShowDialog();
 			}
 		}
+
+		private void mnuVideoOutputViewer_Click(object sender, EventArgs e)
+		{
+			frmVideoViewer frm = new frmVideoViewer();
+			frm.Show();
+		}
 	}
 }

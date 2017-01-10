@@ -106,6 +106,12 @@
     <Compile Include="frmSelectColumns.Designer.cs">
       <DependentUpon>frmSelectColumns.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmVideoViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmVideoViewer.Designer.cs">
+      <DependentUpon>frmVideoViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="HexBox\BuiltInContextMenu.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -142,6 +148,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmSelectColumns.resx">
       <DependentUpon>frmSelectColumns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmVideoViewer.resx">
+      <DependentUpon>frmVideoViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HexBox\HexBox.resx">
       <DependentUpon>HexBox.cs</DependentUpon>

@@ -68,14 +68,14 @@
 			this.mnuShowMetal = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuShowProtection = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuShowSimulationState = new System.Windows.Forms.ToolStripMenuItem();
+			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
 			this.stepToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.nextPixelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.splitContainer1 = new GUI.ctrlSplitContainer();
 			this.ctrlChipDisplay = new GUI.ctrlChipDisplay();
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -189,6 +189,8 @@
 			this.chkShowInHex = new System.Windows.Forms.CheckBox();
 			this.label12 = new System.Windows.Forms.Label();
 			this.cboLogMaxLines = new System.Windows.Forms.ComboBox();
+			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mnuVideoOutputViewer = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -246,6 +248,7 @@
             this.fileToolStripMenuItem,
             this.debugToolStripMenuItem1,
             this.optionsToolStripMenuItem,
+            this.toolsToolStripMenuItem,
             this.helpToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
@@ -576,6 +579,22 @@
 			this.mnuShowSimulationState.Text = "Show simulation state";
 			this.mnuShowSimulationState.CheckedChanged += new System.EventHandler(this.mnuShowSimulationState_CheckedChanged);
 			// 
+			// helpToolStripMenuItem
+			// 
+			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuAbout});
+			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+			this.helpToolStripMenuItem.Text = "Help";
+			// 
+			// mnuAbout
+			// 
+			this.mnuAbout.Image = global::GUI.Properties.Resources.Icon;
+			this.mnuAbout.Name = "mnuAbout";
+			this.mnuAbout.Size = new System.Drawing.Size(152, 22);
+			this.mnuAbout.Text = "About";
+			this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
+			// 
 			// debugToolStripMenuItem
 			// 
 			this.debugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -615,22 +634,6 @@
 			// 
 			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
 			this.toolStripMenuItem3.Size = new System.Drawing.Size(125, 22);
-			// 
-			// helpToolStripMenuItem
-			// 
-			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuAbout});
-			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-			this.helpToolStripMenuItem.Text = "Help";
-			// 
-			// mnuAbout
-			// 
-			this.mnuAbout.Image = global::GUI.Properties.Resources.Icon;
-			this.mnuAbout.Name = "mnuAbout";
-			this.mnuAbout.Size = new System.Drawing.Size(107, 22);
-			this.mnuAbout.Text = "About";
-			this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
 			// 
 			// splitContainer1
 			// 
@@ -1993,6 +1996,21 @@
 			this.cboLogMaxLines.Size = new System.Drawing.Size(57, 21);
 			this.cboLogMaxLines.TabIndex = 23;
 			// 
+			// toolsToolStripMenuItem
+			// 
+			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuVideoOutputViewer});
+			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+			this.toolsToolStripMenuItem.Text = "Tools";
+			// 
+			// mnuVideoOutputViewer
+			// 
+			this.mnuVideoOutputViewer.Name = "mnuVideoOutputViewer";
+			this.mnuVideoOutputViewer.Size = new System.Drawing.Size(183, 22);
+			this.mnuVideoOutputViewer.Text = "Video Output Viewer";
+			this.mnuVideoOutputViewer.Click += new System.EventHandler(this.mnuVideoOutputViewer_Click);
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2056,7 +2074,6 @@
 			this.tabMemory.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
 			this.tableLayoutPanel4.ResumeLayout(false);
-			this.tableLayoutPanel4.PerformLayout();
 			this.tableLayoutPanel11.ResumeLayout(false);
 			this.tableLayoutPanel11.PerformLayout();
 			this.flowLayoutPanel16.ResumeLayout(false);
@@ -2065,7 +2082,6 @@
 			this.flowLayoutPanel17.ResumeLayout(false);
 			this.tabPage2.ResumeLayout(false);
 			this.tableLayoutPanel3.ResumeLayout(false);
-			this.tableLayoutPanel3.PerformLayout();
 			this.tableLayoutPanel9.ResumeLayout(false);
 			this.tableLayoutPanel9.PerformLayout();
 			this.flowLayoutPanel5.ResumeLayout(false);
@@ -2251,6 +2267,8 @@
 		private System.Windows.Forms.ComboBox cboLogMaxLines;
 		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mnuAbout;
+		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem mnuVideoOutputViewer;
 	}
 }
 

@@ -53,6 +53,19 @@ namespace GUI
 				handle.Free();
 			}
 		}
+
+		[DllImport(dllName, EntryPoint = "getFrameBuffer")] private static extern void getFrameBufferWrapper(IntPtr buffer);
+		public static byte[] getFrameBuffer()
+		{
+			byte[] buffer = new byte[256*240*4];
+			GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+			try {
+				getFrameBufferWrapper(handle.AddrOfPinnedObject());
+			} finally {
+				handle.Free();
+			}
+			return buffer;
+		}
 	}
 
 	public enum MirroringType
