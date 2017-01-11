@@ -17,7 +17,9 @@ uint32_t ppuPaletteArgb[64] = { 0xFF666666, 0xFF002A88, 0xFF1412A7, 0xFF3B00A4, 
 
 //TODO: Add all of these to save states
 MirroringType mirroringType;
-std::unordered_map<string, bool> chrStatus;
+bool prevPpuAle = false;
+bool prevPpuWr = true;
+bool prevPpuRd = true;
 int lastAddress = 0;
 int lastData = 0;
 int lastCpuDbValue = 0;
@@ -93,11 +95,12 @@ void initChip(string state, bool softReset)
 
 	cycle = 0;
 	chrAddress = 0;
-	chrStatus["rd"] = 1;
-	chrStatus["wr"] = 1;
-	chrStatus["ale"] = 0;
+	prevPpuRd = true;
+	prevPpuWr = true;
+	prevPpuAle = false;
 }
 
+int cycleCount = 0;
 void halfStep()
 {
 	bool cpu_clk0 = isNodeHigh(nodenames["cpu_clk0"]);
@@ -109,13 +112,18 @@ void halfStep()
 		setHigh("clk0");
 	}
 
-	//Simulate the 74139's logic
-	if(isNodeHigh(nodenames["cpu_ab13"]) && !isNodeHigh(nodenames["cpu_ab14"]) && !isNodeHigh(nodenames["cpu_ab15"]) && isNodeHigh(nodenames["cpu_phi2"])) {
-		setLow("io_ce");
+	if(cycleCount > 0) {
+		cycleCount--;
+		if(!cycleCount) {
+			setHigh("io_ce");
+		}
 	} else {
-		setHigh("io_ce");
+		//Simulate the 74139's logic
+		if(cycleCount == 0 && isNodeHigh(nodenames["cpu_ab13"]) && !isNodeHigh(nodenames["cpu_ab14"]) && !isNodeHigh(nodenames["cpu_ab15"]) && isNodeHigh(nodenames["cpu_clk0"])) {
+			setLow("io_ce");
+			cycleCount = 11;
+		}
 	}
-
 	handleChrBus();
 
 	if(cpu_clk0 != isNodeHigh(nodenames["cpu_clk0"])) {
@@ -256,8 +264,8 @@ int getNametable(int a)
 {
 	int nametable = 0;
 	switch(mirroringType) {
-		case MirroringType::Vertical: nametable = (a & 0x400) ? 1 : 0; break;
 		case MirroringType::Horizontal: nametable = (a & 0x800) ? 1 : 0; break;
+		case MirroringType::Vertical: nametable = (a & 0x400) ? 1 : 0; break;
 		case MirroringType::FourScreens:	nametable = (a & 0xC00) >> 16; break;
 		case MirroringType::ScreenAOnly: nametable = 0; break;
 		case MirroringType::ScreenBOnly: nametable = 1; break;
@@ -290,13 +298,15 @@ void mPpuWrite(int a, int d) {
 	}
 }
 
-int mCpuRead(int a) {
+int mCpuRead(int a, bool &openBus) {
+	openBus = false;
 	if(a < 0x2000) {
 		return cpuRam[a & 0x7FF];
 	} else if(a >= 0x8000) {
 		return prgRam[a - 0x8000];
 	} else {
 		//TODO: proper open bus implementation
+		openBus = true;
 		return lastCpuDbValue;
 	}
 }
@@ -325,12 +335,17 @@ void handleCpuBusRead() {
 		int a = readCpuAddressBus();
 		/*int d = eval(readTriggers[a]);
 		if(d == undefined)*/
-		int d = mCpuRead(a);
+		bool openBus = false;
+		int d = mCpuRead(a, openBus);
 
 		/*if(isNodeHigh(nodenames['sync'])) {
 			eval(fetchTriggers[d]);
 		}*/
-		writeBits("cpu_db", 8, d);
+		if(openBus) {
+			floatBits("cpu_db", 8);
+		} else {
+			writeBits("cpu_db", 8, d);
+		}
 	}
 }
 
@@ -344,35 +359,35 @@ void handleCpuBusWrite() {
 }
 
 void handleChrBus() {
-	std::unordered_map<string, bool> newStatus;
+	bool ale = isNodeHigh(nodenames["ale"]);
+	bool rd = isNodeHigh(nodenames["rd"]);
+	bool wr = isNodeHigh(nodenames["wr"]);
 
-	newStatus["ale"] = isNodeHigh(nodenames["ale"]);
-	newStatus["rd"] = isNodeHigh(nodenames["rd"]);
-	newStatus["wr"] = isNodeHigh(nodenames["wr"]);
 	// rising edge of ALE
-	if(!chrStatus["ale"] && newStatus["ale"]) {
+	if(!prevPpuAle && ale) {
 		chrAddress = readPpuAddressBus();
 	}
 	// falling edge of /RD - put bits on bus
-	if(chrStatus["rd"] && !newStatus["rd"]) {
-		int a = chrAddress;
+	if(prevPpuRd && !rd) {
 		/*var d = eval(readTriggers[a]);*/
 		//if(d == undefined) {
-		uint8_t d = mPpuRead(a);
-		writeBits("db", 8, d);
+		writeBits("db", 8, mPpuRead(chrAddress));
 	}
 	// rising edge of /RD - float the data bus
-	if(!chrStatus["rd"] && newStatus["rd"]) {
+	if(!prevPpuRd && rd) {
 		floatBits("db", 8);
 	}
 	// rising edge of /WR - store data in RAM
-	if(!chrStatus["wr"] && newStatus["wr"]) {
-		int a = chrAddress;
-		int d = readPpuDataBus();
+	if(!prevPpuWr && wr) {
 		//eval(writeTriggers[a]);
-		mPpuWrite(a, d);
+		mPpuWrite(chrAddress, readPpuDataBus());
 	}
-	chrStatus = newStatus;
+
+	readPpuDataBus();
+
+	prevPpuAle = ale;
+	prevPpuRd = rd;
+	prevPpuWr = wr;
 }
 
 void setMirroringType(MirroringType mirroring)
