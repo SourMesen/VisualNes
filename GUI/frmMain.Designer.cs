@@ -68,6 +68,8 @@
 			this.mnuShowMetal = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuShowProtection = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuShowSimulationState = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.mnuVideoOutputViewer = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
 			this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -189,8 +191,6 @@
 			this.chkShowInHex = new System.Windows.Forms.CheckBox();
 			this.label12 = new System.Windows.Forms.Label();
 			this.cboLogMaxLines = new System.Windows.Forms.ComboBox();
-			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.mnuVideoOutputViewer = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -579,6 +579,21 @@
 			this.mnuShowSimulationState.Text = "Show simulation state";
 			this.mnuShowSimulationState.CheckedChanged += new System.EventHandler(this.mnuShowSimulationState_CheckedChanged);
 			// 
+			// toolsToolStripMenuItem
+			// 
+			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuVideoOutputViewer});
+			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+			this.toolsToolStripMenuItem.Text = "Tools";
+			// 
+			// mnuVideoOutputViewer
+			// 
+			this.mnuVideoOutputViewer.Name = "mnuVideoOutputViewer";
+			this.mnuVideoOutputViewer.Size = new System.Drawing.Size(183, 22);
+			this.mnuVideoOutputViewer.Text = "Video Output Viewer";
+			this.mnuVideoOutputViewer.Click += new System.EventHandler(this.mnuVideoOutputViewer_Click);
+			// 
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -591,7 +606,7 @@
 			// 
 			this.mnuAbout.Image = global::GUI.Properties.Resources.Icon;
 			this.mnuAbout.Name = "mnuAbout";
-			this.mnuAbout.Size = new System.Drawing.Size(152, 22);
+			this.mnuAbout.Size = new System.Drawing.Size(107, 22);
 			this.mnuAbout.Text = "About";
 			this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
 			// 
@@ -711,9 +726,9 @@
 			// 
 			this.tableLayoutPanel13.ColumnCount = 5;
 			this.tableLayoutPanel1.SetColumnSpan(this.tableLayoutPanel13, 3);
-			this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 13.97059F));
-			this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15.68627F));
-			this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.96104F));
+			this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.49275F));
+			this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 14.97585F));
+			this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 18.11594F));
 			this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 24.15584F));
 			this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 27.79221F));
 			this.tableLayoutPanel13.Controls.Add(this.flowLayoutPanel24, 3, 1);
@@ -741,7 +756,7 @@
 			this.flowLayoutPanel24.AutoSize = true;
 			this.flowLayoutPanel24.Controls.Add(this.label30);
 			this.flowLayoutPanel24.Controls.Add(this.lblCpuDb);
-			this.flowLayoutPanel24.Location = new System.Drawing.Point(199, 20);
+			this.flowLayoutPanel24.Location = new System.Drawing.Point(197, 20);
 			this.flowLayoutPanel24.Margin = new System.Windows.Forms.Padding(0);
 			this.flowLayoutPanel24.Name = "flowLayoutPanel24";
 			this.flowLayoutPanel24.Size = new System.Drawing.Size(75, 13);
@@ -770,7 +785,7 @@
 			this.flowLayoutPanel23.AutoSize = true;
 			this.flowLayoutPanel23.Controls.Add(this.label28);
 			this.flowLayoutPanel23.Controls.Add(this.lblCpuAb);
-			this.flowLayoutPanel23.Location = new System.Drawing.Point(199, 0);
+			this.flowLayoutPanel23.Location = new System.Drawing.Point(197, 0);
 			this.flowLayoutPanel23.Margin = new System.Windows.Forms.Padding(0);
 			this.flowLayoutPanel23.Name = "flowLayoutPanel23";
 			this.flowLayoutPanel23.Size = new System.Drawing.Size(74, 13);
@@ -799,7 +814,7 @@
 			this.flowLayoutPanel22.AutoSize = true;
 			this.flowLayoutPanel22.Controls.Add(this.label26);
 			this.flowLayoutPanel22.Controls.Add(this.lblPC);
-			this.flowLayoutPanel22.Location = new System.Drawing.Point(121, 20);
+			this.flowLayoutPanel22.Location = new System.Drawing.Point(122, 20);
 			this.flowLayoutPanel22.Margin = new System.Windows.Forms.Padding(0);
 			this.flowLayoutPanel22.Name = "flowLayoutPanel22";
 			this.flowLayoutPanel22.Size = new System.Drawing.Size(49, 13);
@@ -828,7 +843,7 @@
 			this.flowLayoutPanel21.AutoSize = true;
 			this.flowLayoutPanel21.Controls.Add(this.label24);
 			this.flowLayoutPanel21.Controls.Add(this.lblPS);
-			this.flowLayoutPanel21.Location = new System.Drawing.Point(57, 20);
+			this.flowLayoutPanel21.Location = new System.Drawing.Point(60, 20);
 			this.flowLayoutPanel21.Margin = new System.Windows.Forms.Padding(0);
 			this.flowLayoutPanel21.Name = "flowLayoutPanel21";
 			this.flowLayoutPanel21.Size = new System.Drawing.Size(49, 13);
@@ -886,7 +901,7 @@
 			this.flowLayoutPanel18.AutoSize = true;
 			this.flowLayoutPanel18.Controls.Add(this.label18);
 			this.flowLayoutPanel18.Controls.Add(this.lblX);
-			this.flowLayoutPanel18.Location = new System.Drawing.Point(57, 0);
+			this.flowLayoutPanel18.Location = new System.Drawing.Point(60, 0);
 			this.flowLayoutPanel18.Margin = new System.Windows.Forms.Padding(0);
 			this.flowLayoutPanel18.Name = "flowLayoutPanel18";
 			this.flowLayoutPanel18.Size = new System.Drawing.Size(42, 13);
@@ -915,7 +930,7 @@
 			this.flowLayoutPanel19.AutoSize = true;
 			this.flowLayoutPanel19.Controls.Add(this.label20);
 			this.flowLayoutPanel19.Controls.Add(this.lblY);
-			this.flowLayoutPanel19.Location = new System.Drawing.Point(121, 0);
+			this.flowLayoutPanel19.Location = new System.Drawing.Point(122, 0);
 			this.flowLayoutPanel19.Margin = new System.Windows.Forms.Padding(0);
 			this.flowLayoutPanel19.Name = "flowLayoutPanel19";
 			this.flowLayoutPanel19.Size = new System.Drawing.Size(42, 13);
@@ -973,7 +988,7 @@
 			this.flowLayoutPanel25.AutoSize = true;
 			this.flowLayoutPanel25.Controls.Add(this.label17);
 			this.flowLayoutPanel25.Controls.Add(this.lblOpCode);
-			this.flowLayoutPanel25.Location = new System.Drawing.Point(298, 0);
+			this.flowLayoutPanel25.Location = new System.Drawing.Point(297, 0);
 			this.flowLayoutPanel25.Margin = new System.Windows.Forms.Padding(0);
 			this.flowLayoutPanel25.Name = "flowLayoutPanel25";
 			this.flowLayoutPanel25.Size = new System.Drawing.Size(59, 13);
@@ -1138,6 +1153,7 @@
 			// flowLayoutPanel4
 			// 
 			this.flowLayoutPanel4.AutoSize = true;
+			this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel4, 3);
 			this.flowLayoutPanel4.Controls.Add(this.label4);
 			this.flowLayoutPanel4.Controls.Add(this.lblHz);
 			this.flowLayoutPanel4.Location = new System.Drawing.Point(255, 40);
@@ -1965,6 +1981,8 @@
 			// 
 			this.chkShowInHex.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.chkShowInHex.AutoSize = true;
+			this.chkShowInHex.Checked = true;
+			this.chkShowInHex.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.chkShowInHex.Location = new System.Drawing.Point(3, 5);
 			this.chkShowInHex.Name = "chkShowInHex";
 			this.chkShowInHex.Size = new System.Drawing.Size(86, 17);
@@ -1995,21 +2013,6 @@
 			this.cboLogMaxLines.Name = "cboLogMaxLines";
 			this.cboLogMaxLines.Size = new System.Drawing.Size(57, 21);
 			this.cboLogMaxLines.TabIndex = 23;
-			// 
-			// toolsToolStripMenuItem
-			// 
-			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuVideoOutputViewer});
-			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-			this.toolsToolStripMenuItem.Text = "Tools";
-			// 
-			// mnuVideoOutputViewer
-			// 
-			this.mnuVideoOutputViewer.Name = "mnuVideoOutputViewer";
-			this.mnuVideoOutputViewer.Size = new System.Drawing.Size(183, 22);
-			this.mnuVideoOutputViewer.Text = "Video Output Viewer";
-			this.mnuVideoOutputViewer.Click += new System.EventHandler(this.mnuVideoOutputViewer_Click);
 			// 
 			// frmMain
 			// 

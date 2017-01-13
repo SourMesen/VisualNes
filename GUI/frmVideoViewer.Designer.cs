@@ -58,6 +58,7 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.MaximizeBox = false;
 			this.Name = "frmVideoViewer";
+			this.ShowInTaskbar = false;
 			this.Text = "PPU Output Viewer";
 			((System.ComponentModel.ISupportInitialize)(this.picPpuOutput)).EndInit();
 			this.ResumeLayout(false);

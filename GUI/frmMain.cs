@@ -35,6 +35,10 @@ namespace GUI
 			{ 0xFE,"INC Abs,X"}
 		};
 
+		private const string _windowTitle = "Visual NES - 2A03 & 2C02 simulator";
+		internal static string CurrentRom = "";
+		private frmVideoViewer _videoViewer = null;
+
 		private bool _autoRun = false;
 		private object _runLock = new object();
 		private int _stepsToRun = 0;
@@ -140,7 +144,9 @@ namespace GUI
 
 						this.BeginInvoke((MethodInvoker)(() => {
 							double emulatedHz = Stopwatch.Frequency / (double)sw.ElapsedTicks * stepsToRun / 2;
-							lblHz.Text = emulatedHz.ToString("0");
+							int nesMasterClockSpeed = 21477272;
+							double speedPercent = (emulatedHz / nesMasterClockSpeed) * 100;
+							lblHz.Text = string.Format("{0:0} ({1:0.0000}% of NES speed - {2:0.0000} FPM)", emulatedHz, speedPercent, speedPercent / 100 * 60.1 * 60);
 
 							UpdateUI();
 						}));
@@ -187,6 +193,11 @@ namespace GUI
 
 		private void UpdateUI()
 		{
+			this.Text = _windowTitle;
+			if(CurrentRom.Length > 0) {
+				this.Text += " - " + Path.GetFileNameWithoutExtension(CurrentRom);
+			}
+
 			lblHalfCycle.Text = _previousState.halfcycle.ToString();
 			lblPixel.Text = _previousState.hpos.ToString();
 			lblScanline.Text = _previousState.vpos.ToString();
@@ -495,6 +506,8 @@ namespace GUI
 
 		private void btnResetPrgRam_Click(object sender, EventArgs e)
 		{
+			CurrentRom = "";
+			this.Text = _windowTitle;
 			SetMemoryState(MemoryType.PrgRam, new byte[0x8000]);
 		}
 
@@ -581,7 +594,11 @@ namespace GUI
 
 		private void mnuPowerCycle_Click(object sender, EventArgs e)
 		{
-			Reset(false);
+			if(CurrentRom.Length > 0) {
+				LoadRom(CurrentRom);
+			} else {
+				Reset(false);
+			}
 		}
 
 		private void mnuStep_Click(object sender, EventArgs e)
@@ -618,36 +635,42 @@ namespace GUI
 			using(OpenFileDialog ofd = new OpenFileDialog()) {
 				ofd.Filter = "*.nes|*.nes";
 				if(ofd.ShowDialog() == DialogResult.OK) {
-					byte[] rom = File.ReadAllBytes(ofd.FileName);
-
-					if((rom[6] & 0x08) == 0x08) {
-						CoreWrapper.setMirroringType(MirroringType.FourScreens);
-					} else {
-						CoreWrapper.setMirroringType((rom[6] & 0x01) == 0x01 ? MirroringType.Vertical : MirroringType.Horizontal);
-					}
-
-					int prgRamSize = rom[4]*0x4000;
-					int chrRamSize = rom[5]*0x2000;
-					byte[] prgRam = new byte[prgRamSize];
-					byte[] chrRam = new byte[chrRamSize];
-					Array.Copy(rom, 16, prgRam, 0, prgRamSize);
-					Array.Copy(rom, 16 + prgRamSize, chrRam, 0, chrRamSize);
-
-					if(prgRamSize == 0x4000) {
-						Array.Resize(ref prgRam, 0x8000);
-						Array.Copy(prgRam, 0, prgRam, 0x4000, 0x4000);
-					}
-
-					lock(_runLock) {
-						CoreWrapper.setMemoryState(MemoryType.ChrRam, chrRam);
-						CoreWrapper.setMemoryState(MemoryType.PrgRam, prgRam);
-						Stop();
-						Reset(true);
-					}
+					CurrentRom = ofd.FileName;
+					LoadRom(CurrentRom);
 				}
 			}
 		}
 
+		void LoadRom(string filename)
+		{
+			byte[] rom = File.ReadAllBytes(filename);
+
+			if((rom[6] & 0x08) == 0x08) {
+				CoreWrapper.setMirroringType(MirroringType.FourScreens);
+			} else {
+				CoreWrapper.setMirroringType((rom[6] & 0x01) == 0x01 ? MirroringType.Vertical : MirroringType.Horizontal);
+			}
+
+			int prgRamSize = rom[4]*0x4000;
+			int chrRamSize = rom[5]*0x2000;
+			byte[] prgRam = new byte[prgRamSize];
+			byte[] chrRam = new byte[chrRamSize];
+			Array.Copy(rom, 16, prgRam, 0, prgRamSize);
+			Array.Copy(rom, 16 + prgRamSize, chrRam, 0, chrRamSize);
+
+			if(prgRamSize == 0x4000) {
+				Array.Resize(ref prgRam, 0x8000);
+				Array.Copy(prgRam, 0, prgRam, 0x4000, 0x4000);
+			}
+
+			lock(_runLock) {
+				Stop();
+				Reset(false);
+				CoreWrapper.setMemoryState(MemoryType.ChrRam, chrRam);
+				CoreWrapper.setMemoryState(MemoryType.PrgRam, prgRam);
+			}
+		}
+		
 		private void mnuSaveState_Click(object sender, EventArgs e)
 		{
 			SaveFile("Save states (*.ss)|*.ss", (file) => {
@@ -733,8 +756,19 @@ namespace GUI
 
 		private void mnuVideoOutputViewer_Click(object sender, EventArgs e)
 		{
-			frmVideoViewer frm = new frmVideoViewer();
-			frm.Show();
+			if(_videoViewer == null) {
+				_videoViewer = new frmVideoViewer();
+				_videoViewer.StartPosition = FormStartPosition.Manual;
+				_videoViewer.Top = this.Top + this.Height / 2 - _videoViewer.Height / 2;
+				_videoViewer.Left = this.Left + this.Width / 2 - _videoViewer.Width / 2;
+				_videoViewer.Show(this);
+				_videoViewer.FormClosed += (s, evt) => {
+					_videoViewer = null;
+				};
+				_videoViewer.Focus();
+			} else {
+				_videoViewer.Focus();
+			}
 		}
 	}
 }

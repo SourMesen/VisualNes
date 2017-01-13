@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -24,6 +25,14 @@ namespace GUI
 			}
 		}
 
+		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+		{
+			if(keyData == Keys.Escape) {
+				this.Close();
+			}
+			return base.ProcessCmdKey(ref msg, keyData);
+		}
+
 		private void UpdatePicture()
 		{
 			using(Graphics graphics = Graphics.FromImage(picPpuOutput.Image)) {
@@ -35,6 +44,8 @@ namespace GUI
 					handle.Free();
 				}
 				picPpuOutput.Invalidate();
+
+				this.Text = "PPU Output" + (frmMain.CurrentRom.Length > 0 ? " - " + Path.GetFileNameWithoutExtension(frmMain.CurrentRom) : "");
 			}
 		}
 
