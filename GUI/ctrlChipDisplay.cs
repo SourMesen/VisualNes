@@ -384,7 +384,7 @@ namespace GUI
 
 		private void picChip_MouseMove(object sender, MouseEventArgs e)
 		{
-			if(Application.OpenForms[0].Focused) {
+			if(Application.OpenForms[0].ContainsFocus) {
 				this.Focus();
 			}
 			if(ModifierKeys.HasFlag(Keys.Alt)) {
