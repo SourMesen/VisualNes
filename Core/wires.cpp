@@ -34,14 +34,14 @@ unordered_map<uint16_t, std::string> nodenameByNumber;
 
 void setupNodes() 
 {
-	int maxID = 0;
+	int64_t maxID = 0;
 	for(size_t i = 0, len = segdefs.size(); i < len; i++) {
 		maxID = std::max(maxID, segdefs[i][0]);
 	}
 	nodes.insert(nodes.end(), maxID + 1, node());
 
 	for(size_t i = 0, len = segdefs.size(); i < len; i++) {
-		std::vector<int> &seg = segdefs[i];
+		std::vector<int64_t> &seg = segdefs[i];
 		int w = seg[0];
 
 		if(nodes[w].num == EMPTYNODE) {

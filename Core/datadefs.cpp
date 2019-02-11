@@ -2,7 +2,7 @@
 #include "datastructures.h"
 #include "datadefs.h"
 
-vector<vector<int>> segdefs;
+vector<vector<int64_t>> segdefs;
 vector<transdef> transdefs;
 unordered_map<string, uint16_t> nodenames;
 vector<vector<vector<int>>> palette_nodes;
@@ -68,7 +68,7 @@ void loadSegmentDefinitions()
 			}
 
 			vector<string> values = split(lineContent, ',');
-			vector<int> segDef;
+			vector<int64_t> segDef;
 			for(string value : values) {
 				if(segDef.empty()) {
 					segDef.push_back(convertId(std::stoi(value) + segmentIdOffset));
