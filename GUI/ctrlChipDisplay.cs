@@ -258,24 +258,27 @@ namespace GUI
 			}
 		}
 
-		List<int> _highlightedNodes = new List<int>();
-		private void HighlightNode(List<int> nodeNumbers)
+		public void HighlightNode(List<int> nodeNumbers, bool focusOnSelection = false)
 		{
+			List<List<int>> segmentList = new List<List<int>>();
+			
 			using(Graphics g = Graphics.FromImage(_imgHighlight)) {
 				g.Clear(Color.Transparent);
 
-				_highlightedNodes = nodeNumbers;
-
 				foreach(int nn in nodeNumbers) {
 					if(nn < 0) {
+						segmentList.Add(_chipDef.Transistors[-nn + 1].bb);
+						
 						//Draw transistor
 						using(Brush brush = new SolidBrush(Color.FromArgb(180, 255, 255, 255))) {
 							List<int> bb = _chipDef.Transistors[-nn + 1].bb;
 							DrawSegment(g, brush, new List<int> { bb[0], bb[2], bb[1], bb[2], bb[1], bb[3], bb[0], bb[3] }, false);
 						}
 					} else if(_chipDef.Nodes[nn].segs.Count > 0) {
+						segmentList.AddRange(_chipDef.Nodes[nn].segs);
+
 						//Draw node
-						Color color = CoreWrapper.isNodeHigh(nn) ? Color.FromArgb(180, 255, 0, 0) : Color.FromArgb(180, 255, 255, 255);
+						Color color = CoreWrapper.isNodeHigh(nn) ? Color.FromArgb(180, 255, 255, 255) : Color.FromArgb(180, 255, 255, 255);
 						using(Brush brush = new SolidBrush(color)) {
 							foreach(List<int> segments in _chipDef.Nodes[nn].segs) {
 								DrawSegment(g, brush, segments, false);
@@ -284,9 +287,44 @@ namespace GUI
 					}
 				}
 			}
+
+			if(focusOnSelection && segmentList.Count > 0) {
+				var xmin = segmentList[0][0];
+				var xmax = segmentList[0][0];
+				var ymin = segmentList[0][1];
+				var ymax = segmentList[0][1];
+				foreach(List<int> segments in segmentList) {
+					for(var i = 0; i < segments.Count; i += 2) {
+						if(segments[i] < xmin) xmin = segments[i];
+						if(segments[i] > xmax) xmax = segments[i];
+						if(segments[i + 1] < ymin) ymin = segments[i + 1];
+						if(segments[i + 1] > ymax) ymax = segments[i + 1];
+					}
+				}
+
+				ZoomToBox(xmin, xmax, ymin, ymax);
+			}
+
 			_viewPortChanged = true;
 		}
-		
+
+		private void ZoomToBox(int xmin, int xmax, int ymin, int ymax)
+		{
+			var xmid = (xmin + xmax) / 2;
+			var ymid = (ymin + ymax) / 2;
+			var x = xmid * _canvasSizeX / _chipSizeX;
+			var y = (_chipSizeY - ymid) * _canvasSizeY / _chipSizeY;
+
+			int widthOnCanvas = ((xmax - xmin) * _canvasSizeX / _chipSizeX);
+			int heightOnCanvas = ((ymax - ymin) * _canvasSizeY / _chipSizeY);
+			int maxHorizontalScale = _canvasSizeX / widthOnCanvas;
+			int maxVerticalScale = _canvasSizeY / heightOnCanvas;
+
+			_chipScale = Math.Max(1, Math.Min(32, Math.Min(maxHorizontalScale, maxVerticalScale)));
+			_translateX = x * (_dimensionX * _chipScale) / _canvasSizeX - (_dimensionX / 2);
+			_translateY = y * (_dimensionY * _chipScale) / _canvasSizeY - (_dimensionY / 2);
+		}
+
 		private void FindNodeAtLocation(Point location, bool highlightGroup)
 		{
 			int x = (location.X + _translateX - (picChip.Width - _dimensionX) / 2);

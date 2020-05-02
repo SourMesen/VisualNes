@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -94,6 +95,8 @@ namespace GUI
 				CoreWrapper.initEmulator();
 				CoreWrapper.setTrace(string.Join("|", _tracedColumns));
 				CoreWrapper.reset(string.Empty, false);
+
+				txtFindNode.Values = _chipDef.NodeNumberByName.Keys.ToArray();
 
 				Step(1);
 
@@ -770,6 +773,32 @@ namespace GUI
 			} else {
 				_videoViewer.Focus();
 			}
+		}
+
+		private void HighlightSearch()
+		{
+			List<int> nodeNumbers = new List<int>();
+
+			foreach(string nodeName in txtFindNode.SelectedValues) {
+				int nodeNumber;
+				if(_chipDef.NodeNumberByName.TryGetValue(nodeName.Trim(), out nodeNumber)) {
+					nodeNumbers.Add(nodeNumber);
+				}
+			}
+
+			ctrlChipDisplay.HighlightNode(nodeNumbers, true);
+		}
+
+		private void txtFindNode_KeyUp(object sender, KeyEventArgs e)
+		{
+			if(e.KeyCode == Keys.Enter) {
+				HighlightSearch();
+			}
+		}
+
+		private void btnSearch_Click(object sender, EventArgs e)
+		{
+			HighlightSearch();
 		}
 	}
 }

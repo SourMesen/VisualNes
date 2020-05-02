@@ -112,6 +112,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoCompleteTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ChipDefinitions.cs" />
     <Compile Include="CoreWrapper.cs" />
     <Compile Include="ctrlChipDisplay.cs">
