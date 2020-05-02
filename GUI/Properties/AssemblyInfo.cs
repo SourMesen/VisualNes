@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Visual Nes")]
-[assembly: AssemblyCopyright("Copyright © 2017 M Bibaud")]
+[assembly: AssemblyCopyright("Copyright © 2020 M Bibaud")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
