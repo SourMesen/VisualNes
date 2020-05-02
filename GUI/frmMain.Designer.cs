@@ -191,6 +191,9 @@
 			this.chkShowInHex = new System.Windows.Forms.CheckBox();
 			this.label12 = new System.Windows.Forms.Label();
 			this.cboLogMaxLines = new System.Windows.Forms.ComboBox();
+			this.flowLayoutPanel14 = new System.Windows.Forms.FlowLayoutPanel();
+			this.label14 = new System.Windows.Forms.Label();
+			this.lblFrameCount = new System.Windows.Forms.Label();
 			this.menuStrip1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
@@ -240,6 +243,7 @@
 			this.tableLayoutPanel8.SuspendLayout();
 			this.flowLayoutPanel9.SuspendLayout();
 			this.flowLayoutPanel10.SuspendLayout();
+			this.flowLayoutPanel14.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
@@ -584,7 +588,7 @@
 			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuVideoOutputViewer});
 			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
 			this.toolsToolStripMenuItem.Text = "Tools";
 			// 
 			// mnuVideoOutputViewer
@@ -704,10 +708,11 @@
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel13, 2, 0);
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel10, 0, 0);
-			this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel4, 2, 2);
+			this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel14, 2, 2);
 			this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel6, 1, 2);
 			this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel3, 0, 2);
 			this.tableLayoutPanel1.Controls.Add(this.splitContainer2, 0, 3);
+			this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel4, 3, 2);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 3);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -1153,10 +1158,10 @@
 			// flowLayoutPanel4
 			// 
 			this.flowLayoutPanel4.AutoSize = true;
-			this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel4, 3);
+			this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel4, 2);
 			this.flowLayoutPanel4.Controls.Add(this.label4);
 			this.flowLayoutPanel4.Controls.Add(this.lblHz);
-			this.flowLayoutPanel4.Location = new System.Drawing.Point(255, 40);
+			this.flowLayoutPanel4.Location = new System.Drawing.Point(350, 40);
 			this.flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
 			this.flowLayoutPanel4.Name = "flowLayoutPanel4";
 			this.flowLayoutPanel4.Size = new System.Drawing.Size(48, 13);
@@ -1254,7 +1259,7 @@
 			// 
 			this.splitContainer2.Panel2.Controls.Add(this.tableLayoutPanel8);
 			this.splitContainer2.Size = new System.Drawing.Size(673, 565);
-			this.splitContainer2.SplitterDistance = 336;
+			this.splitContainer2.SplitterDistance = 335;
 			this.splitContainer2.TabIndex = 25;
 			// 
 			// tabMemory
@@ -1265,7 +1270,7 @@
 			this.tabMemory.Location = new System.Drawing.Point(0, 0);
 			this.tabMemory.Name = "tabMemory";
 			this.tabMemory.SelectedIndex = 0;
-			this.tabMemory.Size = new System.Drawing.Size(673, 336);
+			this.tabMemory.Size = new System.Drawing.Size(673, 335);
 			this.tabMemory.TabIndex = 22;
 			// 
 			// tabPage1
@@ -1274,7 +1279,7 @@
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(665, 310);
+			this.tabPage1.Size = new System.Drawing.Size(665, 309);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "CPU (2A03)";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -1293,7 +1298,7 @@
 			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel4.Size = new System.Drawing.Size(659, 304);
+			this.tableLayoutPanel4.Size = new System.Drawing.Size(659, 303);
 			this.tableLayoutPanel4.TabIndex = 1;
 			// 
 			// tableLayoutPanel11
@@ -1311,7 +1316,7 @@
 			this.tableLayoutPanel11.Name = "tableLayoutPanel11";
 			this.tableLayoutPanel11.RowCount = 1;
 			this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel11.Size = new System.Drawing.Size(659, 152);
+			this.tableLayoutPanel11.Size = new System.Drawing.Size(659, 151);
 			this.tableLayoutPanel11.TabIndex = 19;
 			// 
 			// flowLayoutPanel16
@@ -1381,7 +1386,7 @@
 			this.hexCpuRam.Location = new System.Drawing.Point(93, 3);
 			this.hexCpuRam.Name = "hexCpuRam";
 			this.hexCpuRam.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
-			this.hexCpuRam.Size = new System.Drawing.Size(485, 146);
+			this.hexCpuRam.Size = new System.Drawing.Size(485, 145);
 			this.hexCpuRam.TabIndex = 16;
 			this.hexCpuRam.UseFixedBytesPerLine = true;
 			this.hexCpuRam.VScrollBarVisible = true;
@@ -1397,7 +1402,7 @@
 			this.tableLayoutPanel12.Controls.Add(this.label16, 0, 0);
 			this.tableLayoutPanel12.Controls.Add(this.hexPrgRam, 1, 0);
 			this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanel12.Location = new System.Drawing.Point(0, 152);
+			this.tableLayoutPanel12.Location = new System.Drawing.Point(0, 151);
 			this.tableLayoutPanel12.Margin = new System.Windows.Forms.Padding(0);
 			this.tableLayoutPanel12.Name = "tableLayoutPanel12";
 			this.tableLayoutPanel12.RowCount = 1;
@@ -1893,7 +1898,7 @@
 			this.tableLayoutPanel8.RowCount = 2;
 			this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel8.Size = new System.Drawing.Size(673, 225);
+			this.tableLayoutPanel8.Size = new System.Drawing.Size(673, 226);
 			this.tableLayoutPanel8.TabIndex = 0;
 			// 
 			// btnSelectColumns
@@ -1912,9 +1917,10 @@
 			this.lstLogView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.lstLogView.FullRowSelect = true;
 			this.lstLogView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.lstLogView.HideSelection = false;
 			this.lstLogView.Location = new System.Drawing.Point(3, 32);
 			this.lstLogView.Name = "lstLogView";
-			this.lstLogView.Size = new System.Drawing.Size(667, 190);
+			this.lstLogView.Size = new System.Drawing.Size(667, 191);
 			this.lstLogView.TabIndex = 12;
 			this.lstLogView.UseCompatibleStateImageBehavior = false;
 			this.lstLogView.View = System.Windows.Forms.View.Details;
@@ -2014,6 +2020,35 @@
 			this.cboLogMaxLines.Size = new System.Drawing.Size(57, 21);
 			this.cboLogMaxLines.TabIndex = 23;
 			// 
+			// flowLayoutPanel14
+			// 
+			this.flowLayoutPanel14.AutoSize = true;
+			this.flowLayoutPanel14.Controls.Add(this.label14);
+			this.flowLayoutPanel14.Controls.Add(this.lblFrameCount);
+			this.flowLayoutPanel14.Location = new System.Drawing.Point(255, 40);
+			this.flowLayoutPanel14.Margin = new System.Windows.Forms.Padding(0);
+			this.flowLayoutPanel14.Name = "flowLayoutPanel14";
+			this.flowLayoutPanel14.Size = new System.Drawing.Size(74, 13);
+			this.flowLayoutPanel14.TabIndex = 5;
+			// 
+			// label14
+			// 
+			this.label14.AutoSize = true;
+			this.label14.Location = new System.Drawing.Point(3, 0);
+			this.label14.Name = "label14";
+			this.label14.Size = new System.Drawing.Size(49, 13);
+			this.label14.TabIndex = 1;
+			this.label14.Text = "Frame #:";
+			// 
+			// lblFrameCount
+			// 
+			this.lblFrameCount.AutoSize = true;
+			this.lblFrameCount.Location = new System.Drawing.Point(58, 0);
+			this.lblFrameCount.Name = "lblFrameCount";
+			this.lblFrameCount.Size = new System.Drawing.Size(13, 13);
+			this.lblFrameCount.TabIndex = 1;
+			this.lblFrameCount.Text = "0";
+			// 
 			// frmMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2103,6 +2138,8 @@
 			this.flowLayoutPanel9.PerformLayout();
 			this.flowLayoutPanel10.ResumeLayout(false);
 			this.flowLayoutPanel10.PerformLayout();
+			this.flowLayoutPanel14.ResumeLayout(false);
+			this.flowLayoutPanel14.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -2272,6 +2309,9 @@
 		private System.Windows.Forms.ToolStripMenuItem mnuAbout;
 		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mnuVideoOutputViewer;
+		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel14;
+		private System.Windows.Forms.Label label14;
+		private System.Windows.Forms.Label lblFrameCount;
 	}
 }
 

@@ -201,6 +201,7 @@ namespace GUI
 			lblHalfCycle.Text = _previousState.halfcycle.ToString();
 			lblPixel.Text = _previousState.hpos.ToString();
 			lblScanline.Text = _previousState.vpos.ToString();
+			lblFrameCount.Text = (_previousState.halfcycle / (8 * 341 * 262 - 1)).ToString();
 
 			lblClk.Text = _previousState.clk.ToString();
 			lblPpuAb.Text = _previousState.ab.ToString("X4");
