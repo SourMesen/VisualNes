@@ -174,6 +174,9 @@ namespace GUI
 		{
 			Action<string, string, int, int, int> loadDefs = (filename, namePrefix, idOffset, xOffset, yOffset) => {
 				foreach(string line in File.ReadAllLines(filename)) {
+					if(line.StartsWith("#")) {
+						continue;
+					}
 					string[] values = line.Split(',');
 					string[] bbValues = values[4].Split('|');
 					List<int> bb = new List<int>();
@@ -192,7 +195,7 @@ namespace GUI
 			};
 
 			loadDefs("transdefs.txt", "", 0, ppuXOffset, ppuYOffset);
-			loadDefs("cputransdefs.txt", "cpu_", cpuOffset, cpuXOffset, cpuYOffset);
+			loadDefs("cputransdefs_revised.txt", "cpu_", cpuOffset, cpuXOffset, cpuYOffset);
 		}
 
 		void loadNodeNames()

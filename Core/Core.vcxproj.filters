@@ -97,5 +97,8 @@
     <Text Include="cputransdefs.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="cputransdefs_revised.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

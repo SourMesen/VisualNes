@@ -95,6 +95,8 @@ void loadTransistorDefinitions()
 			std::getline(file, lineContent);
 			if(lineContent.empty()) {
 				continue;
+			} else if(lineContent[0] == '#') {
+				continue;
 			}
 
 			vector<string> values = split(lineContent, ',');
@@ -111,7 +113,7 @@ void loadTransistorDefinitions()
 	};
 
 	loadTransistors("transdefs.txt", "", 0);
-	loadTransistors("cputransdefs.txt", "cpu_", cpuOffset);
+	loadTransistors("cputransdefs_revised.txt", "cpu_", cpuOffset);
 }
 
 void loadNodeNames()
