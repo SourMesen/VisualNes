@@ -195,7 +195,7 @@ namespace GUI
 			};
 
 			loadDefs("transdefs.txt", "", 0, ppuXOffset, ppuYOffset);
-			loadDefs("cputransdefs_revised.txt", "cpu_", cpuOffset, cpuXOffset, cpuYOffset);
+			loadDefs("cputransdefs.txt", "cpu_", cpuOffset, cpuXOffset, cpuYOffset);
 		}
 
 		void loadNodeNames()

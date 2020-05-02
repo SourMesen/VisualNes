@@ -113,7 +113,7 @@ void loadTransistorDefinitions()
 	};
 
 	loadTransistors("transdefs.txt", "", 0);
-	loadTransistors("cputransdefs_revised.txt", "cpu_", cpuOffset);
+	loadTransistors("cputransdefs.txt", "cpu_", cpuOffset);
 }
 
 void loadNodeNames()

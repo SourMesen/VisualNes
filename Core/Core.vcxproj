@@ -347,7 +347,7 @@
     <Text Include="cpunodenames.txt" />
     <Text Include="cpusegdefs.txt" />
     <Text Include="cputransdefs.txt" />
-    <Text Include="cputransdefs_revised.txt" />
+    <Text Include="cputransdefs_old.txt" />
     <Text Include="nodenames.txt">
       <DeploymentContent>false</DeploymentContent>
     </Text>
