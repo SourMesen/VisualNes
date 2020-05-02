@@ -158,8 +158,8 @@ bool getNodeValue() {
 		return true;
 	}
 
-	int hi_area = 0;
-	int lo_area = 0;
+	int64_t hi_area = 0;
+	int64_t lo_area = 0;
 	for(uint16_t nn : group) {
 		node &n = nodes[nn];
 		if(n.pullup) return true;

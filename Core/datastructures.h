@@ -27,7 +27,7 @@ struct node
 	bool pulldown = false;
 	bool floating = true;
 	
-	int area = 0;
+	int64_t area = 0;
 	uint16_t num = EMPTYNODE;
 	vector<uint16_t> gates;
 	vector<vector<uint16_t>> segs;

@@ -26,7 +26,7 @@ namespace GUI
 		public bool state = false;
 		public List<transistor> gates = new List<transistor>();
 		public List<transistor> c1c2s = new List<transistor>();
-		public int area = 0;
+		public Int64 area = 0;
 		public bool floating = true;
 	}
 

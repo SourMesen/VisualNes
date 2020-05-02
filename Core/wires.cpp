@@ -24,6 +24,7 @@ THE SOFTWARE.
 #include "datastructures.h"
 #include "wires.h"
 #include "datadefs.h"
+#include <iostream>
 
 vector<node> nodes;
 vector<transistor> transistors;
@@ -38,7 +39,7 @@ void setupNodes()
 	for(size_t i = 0, len = segdefs.size(); i < len; i++) {
 		maxID = std::max(maxID, segdefs[i][0]);
 	}
-	nodes.insert(nodes.end(), maxID + 1, node());
+	nodes.insert(nodes.end(), (size_t)maxID + 1, node());
 
 	for(size_t i = 0, len = segdefs.size(); i < len; i++) {
 		std::vector<int> &seg = segdefs[i];
@@ -54,9 +55,9 @@ void setupNodes()
 		if(w == ngnd) continue;
 		if(w == npwr) continue;
 		
-		int area = seg[seg.size() - 2] * seg[4] - seg[3] * seg[seg.size() - 1];
+		int64_t area = (int64_t)seg[seg.size() - 2] * (int64_t)seg[4] - (int64_t)seg[3] * (int64_t)seg[seg.size() - 1];
 		for(size_t j = 3; j + 4 < seg.size(); j += 2) {
-			area += seg[j] * seg[j + 3] - seg[j + 2] * seg[j - 1];
+			area += (int64_t)seg[j] * (int64_t)seg[j + 3] - (int64_t)seg[j + 2] * (int64_t)seg[j - 1];
 		}
 		if(area < 0) {
 			area = -area;
