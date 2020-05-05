@@ -71,10 +71,10 @@ void initChip(string state, bool softReset)
 			setHigh("int");
 
 			//CPU reset
-			for(int i = 0; i<6; i++) {
+			/*for(int i = 0; i<6; i++) {
 				setHigh("clk0");
 				setLow("clk0");
-			}
+			}*/
 
 			setLow("cpu_so");
 			setHigh("cpu_irq");

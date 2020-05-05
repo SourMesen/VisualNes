@@ -33,9 +33,10 @@ shared_ptr<vector<uint16_t>> recalclists[2];
 shared_ptr<vector<uint16_t>> recalclist;
 vector<uint16_t> group;
 
-bool groupEmpty = true;
 bool hasGnd = false;
 bool hasPwr = false;
+
+ofstream logFile("test.txt");
 
 void recalcNodeList(shared_ptr<vector<uint16_t>> list) {
 	if(processedNodes.empty()) {
@@ -47,26 +48,37 @@ void recalcNodeList(shared_ptr<vector<uint16_t>> list) {
 	}
 	recalclist = recalclists[0];
 
-	for(int j = 0; j<100; j++) {		// loop limiter
-		if(j == 99) {
-			throw std::runtime_error("Maximum loop exceeded");
+	for(int j = 0; j<1000; j++) {		// loop limiter
+		if(j >= 99) {
+			logFile << "recalcNodeList iteration: " << j << " " << list->size() << " nodes: ";
+			for(int nodeNumber : *list) {
+				logFile << nodeNumber;
+				auto result = nodenamesById.find(nodeNumber);
+				if(result != nodenamesById.end()) {
+					logFile << " (" << result->second << ") ";
+				}
+				logFile << ", ";
+			}
+
+			logFile << std::endl;
+ 			//throw std::runtime_error("Maximum loop exceeded");
 		}
 
 		for(int nodeNumber : *list) {
 			recalcNode(nodeNumber);
 		}
 
-		if(groupEmpty) return;
-
 		for(int nodeNumber : *recalclist) {
 			processedNodes[nodeNumber] = 0;
 		}
 
 		list = recalclist;
+		if(list->empty()) {
+			return;
+		}
+
 		recalclist = (recalclist == recalclists[1]) ? recalclists[0] : recalclists[1];
 		recalclist->clear();
-
-		groupEmpty = true;
 	}
 }
 
@@ -77,6 +89,10 @@ void recalcNode(uint16_t nodeNumber) {
 	bool newState = getNodeValue();
 
 	for(uint16_t nn : group) {
+		if(nn == npwr || nn == ngnd) {
+			continue;
+		}
+
 		node& n = nodes[nn];
 		if(n.state != newState) {
 			n.state = newState;
@@ -111,8 +127,6 @@ void addRecalcNode(uint16_t nn) {
 		recalclist->push_back(nn);
 		processedNodes[nn] = 1;
 	}
-
-	groupEmpty = false;
 }
 
 void getNodeGroup(uint16_t nn) {
@@ -162,6 +176,7 @@ bool getNodeValue() {
 	int64_t lo_area = 0;
 	for(uint16_t nn : group) {
 		node &n = nodes[nn];
+		if(nn == ngnd || nn == npwr) continue;
 		if(n.pullup) return true;
 		if(n.pulldown) return false;
 		if(n.state) hi_area += n.area;

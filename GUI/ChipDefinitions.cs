@@ -58,7 +58,7 @@ namespace GUI
 		internal List<transistor> Transistors { get { return _transistors; } }
 		internal Dictionary<string, int> NodeNumberByName { get { return _nodeNumberByName; } }
 
-		const int cpuOffset = 13000;
+		const int cpuOffset = 30000;
 		const int cpuXOffset = 0;
 		const int cpuYOffset = 0;
 		const int ppuXOffset = 1500;
@@ -174,7 +174,7 @@ namespace GUI
 		{
 			Action<string, string, int, int, int> loadDefs = (filename, namePrefix, idOffset, xOffset, yOffset) => {
 				foreach(string line in File.ReadAllLines(filename)) {
-					if(line.StartsWith("#")) {
+					if(line.StartsWith("#") || string.IsNullOrWhiteSpace(line)) {
 						continue;
 					}
 					string[] values = line.Split(',');

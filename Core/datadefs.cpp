@@ -5,12 +5,13 @@
 vector<vector<int>> segdefs;
 vector<transdef> transdefs;
 unordered_map<string, uint16_t> nodenames;
+unordered_map<uint16_t, string> nodenamesById;
 vector<vector<vector<int>>> palette_nodes;
 vector<vector<vector<int>>> sprite_nodes;
 
 //Define connections between CPU and PPU
 //Convert some of the CPU nodes into their PPU equivalent (or vice versa)
-int cpuOffset = 13000;
+int cpuOffset = 30000;
 unordered_map<uint16_t, uint16_t> idConvertTable{
 	{ 10000 + cpuOffset, 1 }, //vcc
 	{ 10001 + cpuOffset, 2 }, //vss
@@ -128,7 +129,10 @@ void loadNodeNames()
 			}
 
 			vector<string> values = split(lineContent, ',');
-			nodenames[nameprefix + values[0]] = convertId(stoi(values[1]) + segmentIdOffset);
+			string name = nameprefix + values[0];
+			uint16_t value = convertId(stoi(values[1]) + segmentIdOffset);
+			nodenames[name] = value;
+			nodenamesById[value] = name;
 		}
 		file.close();
 	};
