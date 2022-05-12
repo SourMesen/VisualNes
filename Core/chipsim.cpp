@@ -36,7 +36,7 @@ vector<uint16_t> group;
 bool hasGnd = false;
 bool hasPwr = false;
 
-ofstream logFile("test.txt");
+//ofstream logFile("test.txt");
 
 void recalcNodeList(shared_ptr<vector<uint16_t>> list) {
 	if(processedNodes.empty()) {
@@ -50,7 +50,7 @@ void recalcNodeList(shared_ptr<vector<uint16_t>> list) {
 
 	for(int j = 0; j<1000; j++) {		// loop limiter
 		if(j >= 99) {
-			logFile << "recalcNodeList iteration: " << j << " " << list->size() << " nodes: ";
+			/*logFile << "recalcNodeList iteration: " << j << " " << list->size() << " nodes: ";
 			for(int nodeNumber : *list) {
 				logFile << nodeNumber;
 				auto result = nodenamesById.find(nodeNumber);
@@ -60,8 +60,8 @@ void recalcNodeList(shared_ptr<vector<uint16_t>> list) {
 				logFile << ", ";
 			}
 
-			logFile << std::endl;
- 			//throw std::runtime_error("Maximum loop exceeded");
+			logFile << std::endl;*/
+ 			throw std::runtime_error("Maximum loop exceeded");
 		}
 
 		for(int nodeNumber : *list) {
